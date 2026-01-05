@@ -20,6 +20,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'type-materials',
+    loadComponent: () => import('./modules/type-material/type-material.component').then(c => c.TypeMaterialComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'mines',
     loadComponent: () => import('./modules/mine/mine.component').then(c => c.MineComponent),
     canActivate: [authGuard]

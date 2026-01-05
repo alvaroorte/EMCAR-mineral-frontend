@@ -24,11 +24,29 @@ export class FormUtils {
       description: new FormControl<string>('', [Validators.required, noSpaceValidator])
     });
   }
+
+  static getDefaultTypeMaterialFormGroup(): FormGroup {
+    return new FormGroup({
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      description: new FormControl<string>('', [Validators.required, noSpaceValidator])
+    });
+  }
   
   static getDefaultMineFormGroup(): FormGroup {
     return new FormGroup({
       name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
       description: new FormControl<string>('', [Validators.required, noSpaceValidator])
+    });
+  }
+
+  static getDefaultSupplierFormGroup(): FormGroup {
+    return new FormGroup({
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      surname: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      documentNumber: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldDocument), Validators.minLength(LIMITS.minLengthDocument), noSpaceValidator]),
+      address: new FormControl<string>('', [noSpaceValidator]),
+      supplierGroup: new FormControl<string>(''),
+      expeditionPlace: new FormControl<string>(''),
     });
   }
 

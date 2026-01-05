@@ -4,7 +4,9 @@ import { LIMITS } from "./limits";
 export const MESSAGES = {
   deniedCharactersCode: 'Ingrese solo caracteres alfanuméricos, guiones, guiones bajos y barras inclinadas.',
   deniedCharactersName: 'Ingrese solo caracteres alfanuméricos, guiones, guiones bajos, barras inclinadas y puntos.',
+  deniedCharactersDocument: 'Ingrese solo caracteres alfanuméricos, guiones, guiones bajos.',
   requiredMinLength: `Este campo requiere como mínimo ${LIMITS.minLength} caracteres.`,
+  requiredMinLengthDocument: `Este campo requiere como mínimo ${LIMITS.minLengthDocument} caracteres.`,
   requiredMinLengthCode: `Este campo requiere como mínimo ${LIMITS.minLengthCode} caracteres.`,
   requiredMaxLengthDescription: `Este campo acepta como máximo ${LIMITS.maxLengthDescription} caracteres.`,
   recordDeleted: 'El registro se eliminó correctamente',

@@ -4,6 +4,8 @@ import { ColumnFilterType } from "../enums/column-filter-type.enum";
 import { TableColumnType } from "../enums/table-column-type.enum";
 import { TableColumn } from "../interfaces/table-column-interface";
 import { Material } from "@core/interfaces/material.interface";
+import { Mine } from "@core/interfaces/mine.interface";
+import { Supplier } from "@core/interfaces/supplier.interface";
 
 export class TableColumnDefinitions {
 
@@ -73,7 +75,7 @@ export class TableColumnDefinitions {
     ]
   }
   
-  static getDefaultMineColumnsDefinitions(): TableColumn<Material>[] {
+  static getDefaultTypeMaterialColumnsDefinitions(): TableColumn<Material>[] {
     return [
       {
         field: 'name',
@@ -87,6 +89,58 @@ export class TableColumnDefinitions {
         columnType: TableColumnType.TEXT,
         filterType: ColumnFilterType.TEXT
       }
+    ]
+  }
+  
+  static getDefaultMineColumnsDefinitions(): TableColumn<Mine>[] {
+    return [
+      {
+        field: 'name',
+        header: LABELS.name,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'description',
+        header: LABELS.description,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      }
+    ]
+  }
+  
+  static getDefaultSupplierColumnsDefinitions(): TableColumn<Supplier>[] {
+    return [
+      {
+        field: 'name',
+        header: LABELS.name,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'surname',
+        header: LABELS.surname,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'documentNumber',
+        header: LABELS.docNumber,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'address',
+        header: LABELS.address,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'supplierGroup',
+        header: LABELS.supplierGroup,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
     ]
   }
   
