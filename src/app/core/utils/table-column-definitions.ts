@@ -73,4 +73,21 @@ export class TableColumnDefinitions {
     ]
   }
   
+  static getDefaultMineColumnsDefinitions(): TableColumn<Material>[] {
+    return [
+      {
+        field: 'name',
+        header: LABELS.name,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'description',
+        header: LABELS.description,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      }
+    ]
+  }
+  
 }
