@@ -1,0 +1,19 @@
+<p-dialog
+  [(visible)]="openModal"
+  [header]="labels.preview"
+  styleClass="w-10"
+  [modal]="true"
+  [maximizable]="true"
+  appendTo="body">
+
+  <div class="grid text-center">
+    <div class="col-12">
+      <img
+        [src]="base64 | safe"
+        alt="Imagen Base64"
+        class="image-preview shadow-3 m-3"
+      />
+    </div>
+  </div>
+
+</p-dialog>

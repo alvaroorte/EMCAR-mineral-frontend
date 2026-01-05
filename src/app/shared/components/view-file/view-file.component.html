@@ -1,0 +1,16 @@
+<a
+  [href]="serverUrl+ 'media/' + fileName"
+  class="text-center no-underline lynch-600 bg-lynch-100 border-round-xl px-3 py-2 shadow-3 mr-3"
+  pTooltip="Descargar">
+  <p [ngClass]="['font-semibold', textSize]">
+    <span [ngClass]="['mr-2', 'pt-1', 'pi pi-download', colorTextFile, iconSize]"></span>
+    {{ fileName }}
+  </p>
+</a>
+@if (showButtonPreview) {
+  <i
+    [ngClass]="['bg-lynch-100 border-round-xl p-2 shadow-3 cursor-pointer pi', iconFIle, colorTextFile, iconSize]"
+    [pTooltip]="tooltips.seeFile"
+    (click)="showFile(fileName)"
+  ></i>
+}

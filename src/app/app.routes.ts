@@ -1,0 +1,22 @@
+import { Routes } from '@angular/router';
+import { authGuard } from '@core/guards/auth.guard';
+
+export const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'tickets', redirectTo: '/', pathMatch: 'full' },
+  { path: 'home', redirectTo: '/', pathMatch: 'full' },
+  {
+    path: 'login',
+    loadComponent: () => import('./modules/welcome/welcome.component').then(c => c.WelcomeComponent),
+  },
+  {
+    path: 'companies',
+    loadComponent: () => import('./modules/company/company.component').then(c => c.CompanyComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    loadComponent: () => import('./shared/components/nout-found/nout-found.component').then(c => c.NoutFoundComponent)
+  }
+];
