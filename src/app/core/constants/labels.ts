@@ -14,6 +14,7 @@ export const LABELS = Object.freeze({
   account: 'Cuenta',
   yes: 'Si',
   no: 'No',
+  materials: 'Materiales',
   purpose: 'Propósito',
   delete: 'Eliminar',
   cancelInvoice: 'Anular factura',

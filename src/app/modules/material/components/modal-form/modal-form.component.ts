@@ -4,11 +4,11 @@ import { HelpersService } from '@core/services/helpers.service';
 import { MESSAGES } from '@core/constants/messages';
 import { LABEL_BUTTONS, LABELS } from '@core/constants/labels';
 import { TypeSubmitEnum } from '@core/enums/type-submit';
-import { CompanyService } from '../../services/company.service';
 import { GenericTableComponent } from '@shared/components/generic-table/generic-table.component';
-import { Company } from '@core/interfaces/company.interface';
 import { FormUtils } from '@core/utils/form-groups';
 import { SEVERITY_ENUM } from '@core/enums/severity.enum';
+import { MaterialService } from '../../services/material.service';
+import { Material } from '@core/interfaces/material.interface';
 
 @Component({
     selector: 'app-modal-form',
@@ -18,23 +18,23 @@ import { SEVERITY_ENUM } from '@core/enums/severity.enum';
 export class ModalFormComponent {
 
   private helpersService = inject(HelpersService);
-  private companyService = inject(CompanyService);
+  private materialService = inject(MaterialService);
 
   public readonly labels = LABELS;
   public readonly messages = MESSAGES;
   public readonly buttons = LABEL_BUTTONS;
-  public selectedCompany: Company;
+  public selectedMaterial: Material;
   public openModal: boolean = false;
   public tittleForm: string = "";
-  public formCompany: FormGroup = FormUtils.getDefaultCompanyFormGroup();
-  private tableComponent: GenericTableComponent<Company>;
+  public formMaterial: FormGroup = FormUtils.getDefaultMaterialFormGroup();
+  private tableComponent: GenericTableComponent<Material>;
   private isEdit = signal<boolean>(false);
 
 
   ngOnInit() {
     this.registerTableComponentListener();
     this.waitForDataSelection();
-    this.companyService.eventFormComponent.emit(this);
+    this.materialService.eventFormComponent.emit(this);
   };
   
   public hideModal() {
@@ -43,15 +43,15 @@ export class ModalFormComponent {
  
   private openCreate() {
     this.reset();
-    this.tittleForm = "Crear empresa";
+    this.tittleForm = "Crear material";
     this.isEdit.set(false);
     this.openModal = true;
   };
 
   private openEdit(id: number) {
     this.reset();
-    this.tittleForm="Editar empresa";
-    this.companyService.findById(id).subscribe({
+    this.tittleForm="Editar material";
+    this.materialService.findById(id).subscribe({
       next: (res) => {
         this.isEdit.set(true);
         this.openModal=true;
@@ -60,29 +60,29 @@ export class ModalFormComponent {
     })
   };
 
-  private updateFormValues(company: Company) {
-    this.formCompany.patchValue({
-      ...company
+  private updateFormValues(Material: Material) {
+    this.formMaterial.patchValue({
+      ...Material
     });
   }
 
-  public saveCompany() {
-    if (this.formCompany.valid ) {
+  public saveMaterial() {
+    if (this.formMaterial.valid ) {
       this.isEdit()? this.submit(TypeSubmitEnum.UPDATE): this.submit(TypeSubmitEnum.CREATE);
     }
   };
 
   private reset(): void {
-    this.formCompany.reset();
+    this.formMaterial.reset();
   };
 
   private submit(type: TypeSubmitEnum) {
-    const data: Company = {
-      ...this.formCompany.value,
+    const data: Material = {
+      ...this.formMaterial.value,
     };
     const service = type == TypeSubmitEnum.CREATE
-      ? this.companyService.create(data)
-      : this.companyService.update(this.selectedCompany.id, data)
+      ? this.materialService.create(data)
+      : this.materialService.update(this.selectedMaterial.id, data)
     service.subscribe({
       next: () => {
         const message = type == TypeSubmitEnum.CREATE
@@ -98,13 +98,13 @@ export class ModalFormComponent {
   }
 
   private registerTableComponentListener() {
-    this.companyService.eventTableComponent.subscribe((tableComponent) => {
+    this.materialService.eventTableComponent.subscribe((tableComponent) => {
       this.tableComponent = tableComponent;
     });
   }
 
   private waitForDataSelection() {
-    this.companyService.getSelectedRow().subscribe((company) => this.selectedCompany = company);
+    this.materialService.getSelectedRow().subscribe((Material) => this.selectedMaterial = Material);
   }
   
 }

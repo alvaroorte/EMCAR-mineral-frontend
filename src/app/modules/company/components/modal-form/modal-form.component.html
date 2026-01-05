@@ -1,4 +1,4 @@
-<form [formGroup]="formHoliday">
+<form [formGroup]="formCompany">
 
   <div class="grid">
     <div class="col-12">
@@ -12,16 +12,16 @@
               <input type="text" pInputText id="code" formControlName="code" class="w-full" />
               <label htmlFor="code" class="text-lg font-bold text-800 required-field"> {{ labels.code }} </label>
             </p-float-label>
-            @if (formHoliday.controls['code'].touched && formHoliday.get('code')?.hasError('required')) {
+            @if (formCompany.controls['code'].touched && formCompany.get('code')?.hasError('required')) {
               <small class="p-error block mt-2" > {{ messages.requiredField }} </small>
             }
-            @if (formHoliday.get('code')?.hasError('pattern')) {
+            @if (formCompany.get('code')?.hasError('pattern')) {
               <small class="p-error block mt-2">{{ messages.deniedCharactersCode }}</small>
             }
-            @if (formHoliday.get('code')?.hasError('minlength')) {
+            @if (formCompany.get('code')?.hasError('minlength')) {
               <small class="p-error block mt-2">{{ messages.requiredMinLengthCode }}</small>
             }
-            @if (formHoliday.get('code')?.hasError('noSpace')) {
+            @if (formCompany.get('code')?.hasError('noSpace')) {
               <small class="p-error block mt-2">{{ messages.noOnlySpace }}</small>
             }
           </div>
@@ -31,16 +31,16 @@
               <input type="text" pInputText id="socialReason" formControlName="socialReason" class="w-full" />
               <label htmlFor="socialReason" class="text-lg font-bold text-800 required-field"> {{ labels.name }} </label>
             </p-float-label>
-            @if (formHoliday.controls['socialReason'].touched && formHoliday.get('socialReason')?.hasError('required')) {
+            @if (formCompany.controls['socialReason'].touched && formCompany.get('socialReason')?.hasError('required')) {
               <small class="p-error block mt-2" > {{ messages.requiredField }} </small>
             }
-            @if (formHoliday.get('socialReason')?.hasError('pattern')) {
+            @if (formCompany.get('socialReason')?.hasError('pattern')) {
               <small class="p-error block mt-2">{{ messages.deniedCharactersName }}</small>
             }
-            @if (formHoliday.get('socialReason')?.hasError('minlength')) {
+            @if (formCompany.get('socialReason')?.hasError('minlength')) {
               <small class="p-error block mt-2">{{ messages.requiredMinLength }}</small>
             }
-            @if (formHoliday.get('socialReason')?.hasError('noSpace')) {
+            @if (formCompany.get('socialReason')?.hasError('noSpace')) {
               <small class="p-error block mt-2">{{ messages.noOnlySpace }}</small>
             }
           </div>
@@ -50,7 +50,7 @@
               <input type="number" pInputText id="nit" formControlName="nit" class="w-full" />
               <label htmlFor="nit" class="text-lg font-bold text-800 required-field"> {{ labels.nit }} </label>
             </p-float-label>
-            @if (formHoliday.controls['nit'].touched && formHoliday.get('nit')?.hasError('required')) {
+            @if (formCompany.controls['nit'].touched && formCompany.get('nit')?.hasError('required')) {
               <small class="p-error block mt-2" > {{ messages.requiredField }} </small>
             }
           </div>
@@ -90,8 +90,8 @@
               [rounded]="true"
               size="small"
               class="mr-2 shadow-3 hover-primary"
-              (click)="saveHoliday()"
-              [disabled]="formHoliday.invalid">
+              (click)="saveCompany()"
+              [disabled]="formCompany.invalid">
             </button>
           </div>
         </ng-template>

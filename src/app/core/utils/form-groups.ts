@@ -18,4 +18,11 @@ export class FormUtils {
     });
   }
 
+  static getDefaultMaterialFormGroup(): FormGroup {
+    return new FormGroup({
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      description: new FormControl<string>('', [Validators.required, noSpaceValidator])
+    });
+  }
+
 }

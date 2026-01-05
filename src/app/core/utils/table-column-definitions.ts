@@ -3,6 +3,7 @@ import { LABELS } from "../constants/labels";
 import { ColumnFilterType } from "../enums/column-filter-type.enum";
 import { TableColumnType } from "../enums/table-column-type.enum";
 import { TableColumn } from "../interfaces/table-column-interface";
+import { Material } from "@core/interfaces/material.interface";
 
 export class TableColumnDefinitions {
 
@@ -51,6 +52,23 @@ export class TableColumnDefinitions {
         header: LABELS.phone,
         columnType: TableColumnType.NUMERIC,
         filterType: ColumnFilterType.NUMERIC
+      }
+    ]
+  }
+  
+  static getDefaultMaterialColumnsDefinitions(): TableColumn<Material>[] {
+    return [
+      {
+        field: 'name',
+        header: LABELS.name,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'description',
+        header: LABELS.description,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
       }
     ]
   }

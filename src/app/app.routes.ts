@@ -15,6 +15,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'materials',
+    loadComponent: () => import('./modules/material/material.component').then(c => c.MaterialComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     pathMatch: 'full',
     loadComponent: () => import('./shared/components/nout-found/nout-found.component').then(c => c.NoutFoundComponent)
