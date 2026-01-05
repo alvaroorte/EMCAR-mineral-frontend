@@ -8,6 +8,7 @@ export const urlsWithPermissions: MenuHeader[] = [
   { routerLink: 'type-materials', label: 'Tipos de materiales', access: [ROLES_CODE_SYSTEM.ADMIN], icon: 'pi pi-building', show: false},
   { routerLink: 'mines', label: 'Minas', access: [ROLES_CODE_SYSTEM.ADMIN], icon: 'pi pi-building', show: false},
   { routerLink: 'suppliers', label: 'Proveedores', access: [ROLES_CODE_SYSTEM.ADMIN], icon: 'pi pi-users', show: false},
+  { routerLink: 'lots', label: 'Lotes', access: [ROLES_CODE_SYSTEM.ADMIN], icon: 'pi pi-users', show: true},
 ];
   
 export const configurationLinks: string[] = [ 

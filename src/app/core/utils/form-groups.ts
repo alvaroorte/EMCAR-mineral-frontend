@@ -2,6 +2,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { noSpaceValidator } from "../validators/noSpaceValidator";
 import { regex } from "@core/constants/regexs";
 import { LIMITS } from "@core/constants/limits";
+import { LOT_ASSIGNMENT } from "@core/enums/lot.enum";
 
 export class FormUtils {
   
@@ -29,6 +30,16 @@ export class FormUtils {
     return new FormGroup({
       name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
       description: new FormControl<string>('', [Validators.required, noSpaceValidator])
+    });
+  }
+
+  static getDefaultLLotFormGroup(): FormGroup {
+    return new FormGroup({
+      prefix: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldCode), Validators.minLength(LIMITS.minLengthCode), noSpaceValidator]),
+      description: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      initialDocNumber: new FormControl<string>('', [Validators.required]),
+      assignment: new FormControl<LOT_ASSIGNMENT>(LOT_ASSIGNMENT.RECEPTION, [Validators.required]),
+      state: new FormControl<string>('', [Validators.required])
     });
   }
   

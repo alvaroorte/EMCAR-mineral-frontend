@@ -6,6 +6,8 @@ import { TableColumn } from "../interfaces/table-column-interface";
 import { Material } from "@core/interfaces/material.interface";
 import { Mine } from "@core/interfaces/mine.interface";
 import { Supplier } from "@core/interfaces/supplier.interface";
+import { TypeMaterial } from "@core/interfaces/type-material.interface";
+import { Lot } from "@core/interfaces/lot.interface";
 
 export class TableColumnDefinitions {
 
@@ -75,7 +77,36 @@ export class TableColumnDefinitions {
     ]
   }
   
-  static getDefaultTypeMaterialColumnsDefinitions(): TableColumn<Material>[] {
+  static getDefaultLotColumnsDefinitions(): TableColumn<Lot>[] {
+    return [
+      {
+        field: 'description',
+        header: LABELS.description,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'prefix',
+        header: LABELS.prefix,
+        columnType: TableColumnType.TEXT,
+        filterType: ColumnFilterType.TEXT
+      },
+      {
+        field: 'initialDocNumber',
+        header: LABELS.initialNumber,
+        columnType: TableColumnType.NUMERIC,
+        filterType: ColumnFilterType.NUMERIC
+      },
+      {
+        field: 'state',
+        header: LABELS.status,
+        columnType: TableColumnType.STATUS,
+        filterType: ColumnFilterType.TEXT
+      }
+    ]
+  }
+  
+  static getDefaultTypeMaterialColumnsDefinitions(): TableColumn<TypeMaterial>[] {
     return [
       {
         field: 'name',
