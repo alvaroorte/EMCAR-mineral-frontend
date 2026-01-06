@@ -15,6 +15,7 @@ export const LABELS = Object.freeze({
   yes: 'Si',
   no: 'No',
   materials: 'Materiales',
+  cooperatives: 'Cooperativas',
   lots: 'Lotes',
   typeMaterials: 'Tipos de materiales',
   mines: 'Minas',
@@ -184,6 +185,13 @@ export const LABELS = Object.freeze({
   expenseBudgetSummary: 'Presupuesto de gasto',
   resourceBudgetSummary: 'Presupuesto de recurso',
   listOfCompanies: 'Lista de empresas',
+  cajaNacional: 'Caja Nacional',
+  fedecomin: 'FEDECOMIN',
+  fencomin: 'FENCOMIN',
+  comibol: 'COMIBOL',
+  wilstermann: 'WILSTERMANN',
+  cooperativeContribution: 'Contribución cooperativa',
+  miningRoyalties: 'Regalías mineras',
 } as const);
 
 export const TITLES = Object.freeze({

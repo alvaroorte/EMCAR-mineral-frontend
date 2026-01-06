@@ -1,6 +1,5 @@
 import { Company } from "@core/interfaces/company.interface";
 import { LABELS } from "../constants/labels";
-import { ColumnFilterType } from "../enums/column-filter-type.enum";
 import { TableColumnType } from "../enums/table-column-type.enum";
 import { TableColumn } from "../interfaces/table-column-interface";
 import { Material } from "@core/interfaces/material.interface";
@@ -8,6 +7,7 @@ import { Mine } from "@core/interfaces/mine.interface";
 import { Supplier } from "@core/interfaces/supplier.interface";
 import { TypeMaterial } from "@core/interfaces/type-material.interface";
 import { Lot } from "@core/interfaces/lot.interface";
+import { Cooperative } from "@core/interfaces/cooperative.interface";
 
 export class TableColumnDefinitions {
 
@@ -16,46 +16,38 @@ export class TableColumnDefinitions {
       {
         field: 'code',
         header: LABELS.code,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'socialReason',
         header: LABELS.name,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'nit',
         header: LABELS.nit,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'address',
         header: LABELS.address,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT,
-        initiallyHidden: true
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'purpose',
         header: LABELS.purpose,
         columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT,
         initiallyHidden: true
       },
       {
         field: 'nim',
         header: LABELS.nim,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'cellphone',
         header: LABELS.phone,
-        columnType: TableColumnType.NUMERIC,
-        filterType: ColumnFilterType.NUMERIC
+        columnType: TableColumnType.NUMERIC
       }
     ]
   }
@@ -65,14 +57,57 @@ export class TableColumnDefinitions {
       {
         field: 'name',
         header: LABELS.name,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'description',
         header: LABELS.description,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
+      }
+    ]
+  }
+  
+  static getDefaultCooperativeColumnsDefinitions(): TableColumn<Cooperative>[] {
+    return [
+      {
+        field: 'name',
+        header: LABELS.name,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'cajaNacional',
+        header: LABELS.cajaNacional + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'fedecomin',
+        header: LABELS.fedecomin + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'fencomin',
+        header: LABELS.fencomin + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'comibol',
+        header: LABELS.comibol + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'wilstermann',
+        header: LABELS.wilstermann + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'cooperativeContribution',
+        header: LABELS.cooperativeContribution + ' %',
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'miningRoyalties',
+        header: LABELS.miningRoyalties + ' %',
+        columnType: TableColumnType.AMOUNT
       }
     ]
   }
@@ -82,26 +117,22 @@ export class TableColumnDefinitions {
       {
         field: 'description',
         header: LABELS.description,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'prefix',
         header: LABELS.prefix,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'initialDocNumber',
         header: LABELS.initialNumber,
-        columnType: TableColumnType.NUMERIC,
-        filterType: ColumnFilterType.NUMERIC
+        columnType: TableColumnType.NUMERIC
       },
       {
         field: 'state',
         header: LABELS.status,
-        columnType: TableColumnType.STATUS,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.STATUS
       }
     ]
   }
@@ -111,14 +142,12 @@ export class TableColumnDefinitions {
       {
         field: 'name',
         header: LABELS.name,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'description',
         header: LABELS.description,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       }
     ]
   }
@@ -128,14 +157,12 @@ export class TableColumnDefinitions {
       {
         field: 'name',
         header: LABELS.name,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'description',
         header: LABELS.description,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       }
     ]
   }
@@ -145,32 +172,27 @@ export class TableColumnDefinitions {
       {
         field: 'name',
         header: LABELS.name,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'surname',
         header: LABELS.surname,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'documentNumber',
         header: LABELS.docNumber,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'address',
         header: LABELS.address,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
       {
         field: 'supplierGroup',
         header: LABELS.supplierGroup,
-        columnType: TableColumnType.TEXT,
-        filterType: ColumnFilterType.TEXT
+        columnType: TableColumnType.TEXT
       },
     ]
   }

@@ -61,4 +61,24 @@ export class FormUtils {
     });
   }
 
+  static getDefaultCooperativeFormGroup(): FormGroup {
+    return new FormGroup({
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(regex.fieldName), Validators.minLength(LIMITS.minLength), noSpaceValidator]),
+      cajaNacional: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      fedecomin: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      fencomin: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      comibol: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      wilstermann: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      cooperativeContribution: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      miningRoyalties: new FormControl<number>(0, [Validators.required, Validators.min(LIMITS.minPercent), Validators.max(LIMITS.maxPercent)]),
+      printCajaNacional: new FormControl<boolean>(true, []),
+      printFedecomin: new FormControl<boolean>(true, []),
+      printFencomin: new FormControl<boolean>(true, []),
+      printComibol: new FormControl<boolean>(true, []),
+      printWilstermann: new FormControl<boolean>(true, []),
+      printCooperativeContribution: new FormControl<boolean>(true, []),
+      printMiningRoyalties: new FormControl<boolean>(true, []),
+    });
+  }
+
 }
