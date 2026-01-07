@@ -9,6 +9,7 @@ import { TypeMaterial } from "@core/interfaces/type-material.interface";
 import { Lot } from "@core/interfaces/lot.interface";
 import { Cooperative } from "@core/interfaces/cooperative.interface";
 import { Load } from "@core/interfaces/load.interface";
+import { AdvanceLoad } from "@core/interfaces/advance-load.interface";
 
 export class TableColumnDefinitions {
 
@@ -253,6 +254,57 @@ export class TableColumnDefinitions {
       {
         field: 'updatedBy',
         header: LABELS.updatedBy,
+        columnType: TableColumnType.TEXT
+      },
+    ]
+  }
+
+  static getDefaultAdvanceLoadColumnsDefinitions(): TableColumn<AdvanceLoad>[] {
+    return [
+      {
+        field: 'receiptType',
+        header: LABELS.receiptType,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'receiptCode',
+        header: LABELS.receiptCode,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'date',
+        header: LABELS.date,
+        columnType: TableColumnType.DATE
+      },
+      {
+        field: 'amount',
+        header: LABELS.amount,
+        columnType: TableColumnType.AMOUNT
+      },
+      {
+        field: 'concept',
+        header: LABELS.concept,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'paymentType',
+        header: LABELS.paymentType,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'paymentChanel',
+        header: LABELS.paymentedBy,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'checkNumber',
+        header: LABELS.checkNumber,
+        columnType: TableColumnType.TEXT,
+        initiallyHidden: true
+      },
+      {
+        field: 'observation',
+        header: LABELS.observation,
         columnType: TableColumnType.TEXT
       },
     ]

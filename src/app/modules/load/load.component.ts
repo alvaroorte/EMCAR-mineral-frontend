@@ -7,10 +7,11 @@ import { TableColumnDefinitions } from '@core/utils/table-column-definitions';
 import { LoadModule } from './load.module';
 import { LoadService } from './services/load.service';
 import { Load } from '@core/interfaces/load.interface';
+import { AdvanceLoadComponent } from '../advance-load/advance-load.component';
 
 @Component({
     selector: 'app-load',
-    imports: [LoadModule, ToolbarComponent, ModaldeleteComponent, GenericTableComponent],
+    imports: [LoadModule, ToolbarComponent, ModaldeleteComponent, GenericTableComponent, AdvanceLoadComponent],
     templateUrl: './load.component.html'
 })
 export class LoadComponent implements OnInit {

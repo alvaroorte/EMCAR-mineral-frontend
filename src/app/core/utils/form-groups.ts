@@ -96,5 +96,20 @@ export class FormUtils {
       observation: new FormControl<string>(''),
     });
   }
+  
+  static getDefaultAdvanceLoadFormGroup(): FormGroup {
+    return new FormGroup({
+      loadId: new FormControl<number>(null, [Validators.required]),
+      receiptType: new FormControl<string>(null, [Validators.required]),
+      receiptCode: new FormControl<number>(null, [Validators.required]),
+      date: new FormControl<string>('', [Validators.required]),
+      amount: new FormControl<number>(null, [Validators.required]),
+      concept: new FormControl<number>(null, [Validators.required]),
+      paymentType: new FormControl<number>(null, [Validators.required]),
+      paymentChanel: new FormControl<number>(null, [Validators.required]),
+      checkNumber: new FormControl<number>(null),
+      observation: new FormControl<number>(null),
+    });
+  }
 
 }
