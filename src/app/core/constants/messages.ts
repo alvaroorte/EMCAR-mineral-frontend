@@ -19,6 +19,7 @@ export const MESSAGES = {
   showingFirstToLastOfItems: 'Mostrando del {first} al {last} de {totalRecords} elementos',
   withOutItems: 'Sin registros.',
   requiredField: 'Este campo es obligatorio.',
+  welcomePage: 'Bienvenidos al sistema EMCAR.',
   emailIsRequired: 'El campo Correo es obligatorio.',
   emailIsInvalid: 'El Correo ingresado no es válido.',
   passwordIsRequired: 'El campo Contraseña es obligatorio.',
