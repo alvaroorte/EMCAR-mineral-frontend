@@ -9,3 +9,9 @@ export interface Supplier extends DataBase {
     supplierGroup: string;
     expeditionPlace: string;
 }
+
+export interface SupplierSelect {
+    id: number;
+    documentNumber: string;
+    fullName: string;
+}

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, Output, EventEmitter  } from '@angular/core';
 import { environment } from '@core/environments/environment.development';
 import { IServiceCommon } from '@core/interfaces/service-common.interface';
@@ -7,26 +7,25 @@ import { GenericTableComponent } from '@shared/components/generic-table/generic-
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
-import { Lot } from '@core/interfaces/lot.interface';
+import { CorrelativeLot, Load } from '@core/interfaces/load.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LotService extends CrudService<Lot> implements IServiceCommon {
+export class LoadService extends CrudService<Load> implements IServiceCommon {
 
   @Output() eventFormComponent: EventEmitter<ModalFormComponent> = new EventEmitter();
-  @Output() eventTableComponent: EventEmitter<GenericTableComponent<Lot>> = new EventEmitter();
+  @Output() eventTableComponent: EventEmitter<GenericTableComponent<Load>> = new EventEmitter();
   @Output() eventModalDeleteComponent: EventEmitter<ModaldeleteComponent> = new EventEmitter();
 
   constructor(
     protected override http: HttpClient,
     protected override httpErrorHandlerService: HttpErrorHandlerService) {
-    super(http, `${environment.server_url}/lots`, httpErrorHandlerService);
+    super(http, `${environment.server_url}/loads`, httpErrorHandlerService);
   }
 
-  public getSearch(state: boolean) {
-    const params = new HttpParams().set('state', state);
-    return this.request(this.http.get<Lot[]>(`${this.url}/search`, { params }));
+  public getCorrelativeLot(lotId: number) {
+    return this.request(this.http.get<CorrelativeLot>(`${this.url}/correlative/preview/${lotId}`));
   }
 
 }

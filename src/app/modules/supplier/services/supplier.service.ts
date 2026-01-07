@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Output, EventEmitter  } from '@angular/core';
 import { environment } from '@core/environments/environment.development';
 import { IServiceCommon } from '@core/interfaces/service-common.interface';
@@ -7,7 +7,7 @@ import { GenericTableComponent } from '@shared/components/generic-table/generic-
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
-import { Supplier } from '@core/interfaces/supplier.interface';
+import { Supplier, SupplierSelect } from '@core/interfaces/supplier.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,11 @@ export class SupplierService extends CrudService<Supplier> implements IServiceCo
     protected override http: HttpClient,
     protected override httpErrorHandlerService: HttpErrorHandlerService) {
     super(http, `${environment.server_url}/suppliers`, httpErrorHandlerService);
+  }
+
+  public getSelect(some: string = '') {
+    const params = new HttpParams().set('some', some);
+    return this.request(this.http.get<SupplierSelect[]>(`${this.url}/select`, { params }));
   }
 
 }

@@ -8,6 +8,7 @@ import { Supplier } from "@core/interfaces/supplier.interface";
 import { TypeMaterial } from "@core/interfaces/type-material.interface";
 import { Lot } from "@core/interfaces/lot.interface";
 import { Cooperative } from "@core/interfaces/cooperative.interface";
+import { Load } from "@core/interfaces/load.interface";
 
 export class TableColumnDefinitions {
 
@@ -192,6 +193,66 @@ export class TableColumnDefinitions {
       {
         field: 'supplierGroup',
         header: LABELS.supplierGroup,
+        columnType: TableColumnType.TEXT
+      },
+    ]
+  }
+
+  static getDefaultLoadColumnsDefinitions(): TableColumn<Load>[] {
+    return [
+      {
+        field: 'date',
+        header: LABELS.date,
+        columnType: TableColumnType.DATE
+      },
+      {
+        field: 'supplierName',
+        header: LABELS.clientName,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'lotDescription',
+        header: LABELS.clientName,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'externalLot',
+        header: LABELS.clientName,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'materialName',
+        header: LABELS.materials,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'weight',
+        header: LABELS.weight,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'numberSacks',
+        header: LABELS.numberSacks,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'cooperativeName',
+        header: LABELS.cooperative,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'observation',
+        header: LABELS.observation,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'createdBy',
+        header: LABELS.createdBy,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'updatedBy',
+        header: LABELS.updatedBy,
         columnType: TableColumnType.TEXT
       },
     ]

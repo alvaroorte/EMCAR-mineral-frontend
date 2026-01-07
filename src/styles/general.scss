@@ -122,3 +122,14 @@ li.p-tabmenuitem-active {
 .inputtext-hover:hover {
     border: 1px solid var(--p-inputtext-hover-border-color);
 }
+
+.non-editable-field {
+  border: 1px solid var(--surface-d);
+  border-radius: 3px;
+  background-color: var(--surface-c);
+  min-height: 35px;
+  max-height: 35px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
+}

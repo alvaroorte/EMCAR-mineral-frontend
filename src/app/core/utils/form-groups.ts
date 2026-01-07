@@ -81,4 +81,20 @@ export class FormUtils {
     });
   }
 
+  static getDefaultLoadFormGroup(): FormGroup {
+    return new FormGroup({
+      supplierId: new FormControl<number>(null, [Validators.required]),
+      date: new FormControl<string>(null, [Validators.required]),
+      lotId: new FormControl<number>(null, [Validators.required]),
+      correlativeLotCode: new FormControl<string>('', [Validators.required]),
+      materialId: new FormControl<number>(null, [Validators.required]),
+      typeMaterialId: new FormControl<number>(null, [Validators.required]),
+      weight: new FormControl<number>(null, [Validators.required]),
+      numberSacks: new FormControl<number>(null, [Validators.required]),
+      mineId: new FormControl<number>(null),
+      cooperativeId: new FormControl<number>(null),
+      observation: new FormControl<string>(''),
+    });
+  }
+
 }
