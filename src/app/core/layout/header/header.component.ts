@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
     public changeTheme(showLoader: boolean) {
         const element: HTMLHtmlElement = document.querySelector('html');
         const theme = this.themeSelection? 'dark': 'light';
-        this.themeSelection? element.classList.add('ticket-mode-dark'): element.classList.remove('ticket-mode-dark');
+        this.themeSelection? element.classList.add('emcar-mode-dark'): element.classList.remove('emcar-mode-dark');
         const themeLink = document.getElementById('theme-main') as HTMLLinkElement ;
         if (themeLink) {
             this.localStorageService.set(LOCAL_STORAGE.THEME, theme)

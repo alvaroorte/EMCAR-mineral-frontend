@@ -12,8 +12,6 @@
       "@supervisor/*": ["src/app/modules/supervisor/*"],
       "@supervisorCategory/*": ["src/app/modules/supervisor-categories/*"],
       "@parameter/*": ["src/app/modules/parameters/*"],
-      "@ticket-historical/*": ["src/app/modules/tickets-historical/*"],
-      "@ticketCard/*": ["src/app/modules/tickets-card/*"],
       "@core/*": ["src/app/core/*"],
       "@shared/*": ["src/app/shared/*"],
     },

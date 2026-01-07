@@ -1,7 +1,0 @@
-export enum TypeFieldEnum {
-    DROPDOWN,
-    TEXTAREA_EDITOR,
-    TEXTAREA_SIMPLE,
-    FILE,
-    DESCRIPTION_TICKET
-}

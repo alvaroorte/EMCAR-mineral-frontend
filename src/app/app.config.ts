@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
             preset: Lara,
             options: {
               prefix: 'p',
-              darkModeSelector: '.ticket-mode-dark',
+              darkModeSelector: '.emcar-mode-dark',
               cssLayer: false
             }
         },

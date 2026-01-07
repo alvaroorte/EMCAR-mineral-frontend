@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ticket": {
+    "emcar": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
            "builder": "@angular-devkit/build-angular:application",
            "options": {
               "outputPath": {
-                "base": "dist/ticket"
+                "base": "dist/emcar"
               },
               "index": "src/index.html",
               "polyfills": ["zone.js", "src/polyfills.ts"],
@@ -187,19 +187,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ticket:build:production"
+              "buildTarget": "emcar:build:production"
             },
             "dev": {
-              "buildTarget": "ticket:build:dev"
+              "buildTarget": "emcar:build:dev"
             },
             "test": {
-              "buildTarget": "ticket:build:test"
+              "buildTarget": "emcar:build:test"
             },
             "qa": {
-              "buildTarget": "ticket:build:qa"
+              "buildTarget": "emcar:build:qa"
             },
             "development": {
-              "buildTarget": "ticket:build:development"
+              "buildTarget": "emcar:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -207,7 +207,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ticket:build"
+            "buildTarget": "emcar:build"
           }
         },
         "test": {
