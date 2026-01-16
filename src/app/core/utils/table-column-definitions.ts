@@ -10,6 +10,7 @@ import { Lot } from "@core/interfaces/lot.interface";
 import { Cooperative } from "@core/interfaces/cooperative.interface";
 import { Load } from "@core/interfaces/load.interface";
 import { AdvanceLoad } from "@core/interfaces/advance-load.interface";
+import { Liquidation } from "@core/interfaces/liquidation.interface";
 
 export class TableColumnDefinitions {
 
@@ -208,17 +209,17 @@ export class TableColumnDefinitions {
       },
       {
         field: 'supplierName',
-        header: LABELS.clientName,
+        header: LABELS.supplier,
         columnType: TableColumnType.TEXT
       },
       {
         field: 'lotDescription',
-        header: LABELS.clientName,
+        header: LABELS.lot,
         columnType: TableColumnType.TEXT
       },
       {
         field: 'externalLot',
-        header: LABELS.clientName,
+        header: LABELS.lotExternal,
         columnType: TableColumnType.TEXT
       },
       {
@@ -228,17 +229,22 @@ export class TableColumnDefinitions {
       },
       {
         field: 'weight',
-        header: LABELS.weight,
-        columnType: TableColumnType.TEXT
+        header: LABELS.weightKg,
+        columnType: TableColumnType.AMOUNT
       },
       {
         field: 'numberSacks',
         header: LABELS.numberSacks,
-        columnType: TableColumnType.TEXT
+        columnType: TableColumnType.NUMERIC
       },
       {
         field: 'cooperativeName',
         header: LABELS.cooperative,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'mineName',
+        header: LABELS.mine,
         columnType: TableColumnType.TEXT
       },
       {
@@ -307,6 +313,21 @@ export class TableColumnDefinitions {
         header: LABELS.observation,
         columnType: TableColumnType.TEXT
       },
+    ]
+  }
+
+  static getDefaultLiquidationColumnsDefinitions(): TableColumn<Liquidation>[] {
+    return [
+      {
+        field: 'liquidationType',
+        header: LABELS.liquidationType,
+        columnType: TableColumnType.TEXT
+      },
+      {
+        field: 'liquidationDate',
+        header: LABELS.liquidationDate,
+        columnType: TableColumnType.TEXT
+      }
     ]
   }
   

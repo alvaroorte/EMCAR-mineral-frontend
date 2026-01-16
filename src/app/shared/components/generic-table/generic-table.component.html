@@ -68,6 +68,7 @@
   [resizableColumns]="true"
   [reorderableColumns]="true"
   selectionMode="single"
+  [style]="{'max-width': '93vw'}"
   [(selection)]="selectedItem"
   [rows]="tableProps.rows"
   [showCurrentPageReport]="true"
@@ -146,10 +147,10 @@
             </ng-template>
             
             <ng-template [ngSwitchCase]="tableColumnFormatTypes.STATUS">
-              <span
-                [ngClass]="[row[column.field]? 'text-green-500': 'text-red-500']">
+              <p
+                [ngClass]="['text-center', row[column.field]? 'text-green-500': 'text-red-500']">
                 {{ row[column.field]? 'Activo': 'Inactivo' }}
-              </span>
+              </p>
             </ng-template>
 
             <ng-template [ngSwitchCase]="tableColumnFormatTypes.DATE">

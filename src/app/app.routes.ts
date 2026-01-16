@@ -49,6 +49,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'liquidations',
+    loadComponent: () => import('./modules/liquidation/liquidation.component').then(c => c.LiquidationComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     pathMatch: 'full',
     loadComponent: () => import('./shared/components/nout-found/nout-found.component').then(c => c.NoutFoundComponent)

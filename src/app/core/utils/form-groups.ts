@@ -112,4 +112,25 @@ export class FormUtils {
     });
   }
 
+  static getDefaultLiquidationFormGroup(): FormGroup {
+    return new FormGroup({
+      liquidationType: new FormControl<string>('', [Validators.required]),
+      loadId: new FormControl<number>(null, [Validators.required]),
+      supplierId: new FormControl<number>(null, [Validators.required]),
+      cooperativeId: new FormControl<number>(null, [Validators.required]),
+      mineId: new FormControl<number>(null, [Validators.required]),
+      admissionDate: new FormControl<string>('', [Validators.required]),
+      liquidationDate: new FormControl<string>('', [Validators.required]),
+      exchangeRate: new FormControl<number>(null, [Validators.required]),
+      priceSilver: new FormControl<number>(null),
+      priceZinc: new FormControl<number>(null),
+      priceLead: new FormControl<number>(null),
+      lawSilver: new FormControl<number>(null),
+      lawZinc: new FormControl<number>(null),
+      lawLead: new FormControl<number>(null),
+      humidityPercentage: new FormControl<number>(null, [Validators.required]),
+      metricWetTonnes: new FormControl<number>(null, [Validators.required]),
+    });
+  }
+
 }

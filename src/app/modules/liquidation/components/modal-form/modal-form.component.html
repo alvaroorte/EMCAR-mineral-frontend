@@ -1,0 +1,170 @@
+<form [formGroup]="formLiquidation">
+
+  <div class="grid">
+    <div class="col-12">
+      <p-dialog [(visible)]="openModal" styleClass="w-10 md:w-6 lg:w-4" [header]="tittleForm" [modal]="true" class="p-fluid">
+        <ng-template pTemplate="content">
+
+          <app-message-required-field></app-message-required-field>
+
+          <div class="form-group field mt-3 col-6">
+            <p-float-label>
+              <p-select
+                inputId="liquidationType"
+                formControlName="liquidationType"
+                [options]="liquidationTypes | keyvalue"
+                optionLabel="value"
+                optionValue="value"
+                [filter]="true"
+                filterBy="value"
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+              <label for="liquidationType" class="text-lg font-bold text-800 required-field"> {{ labels.liquidationType }} </label>
+            </p-float-label>
+          </div>
+          
+          <div class="form-group field mt-3 col-6">
+            <p-float-label>
+              <p-select
+                inputId="loadId"
+                formControlName="loadId"
+                [options]="loads"
+                optionLabel="correlativeLotCode"
+                optionValue="id"
+                [filter]="true"
+                filterBy="value"
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+              <label for="loadId" class="text-lg font-bold text-800 required-field"> {{ labels.loads }} </label>
+            </p-float-label>
+          </div>
+
+          <div class="form-group field mt-5 col-6">
+            <p-float-label>
+              <p-datepicker 
+                id="admissionDate"
+                styleClass="w-full"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                appendTo="body"
+                formControlName="admissionDate">
+              </p-datepicker >
+              <label htmlFor="admissionDate" class="text-lg font-bold text-800 required-field"> {{ labels.admissionDate }} </label>
+            </p-float-label>
+          </div>
+
+          <div class="form-group field mt-5 col-6">
+            <p-float-label>
+              <p-datepicker 
+                id="liquidationDate"
+                styleClass="w-full"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                appendTo="body"
+                formControlName="liquidationDate">
+              </p-datepicker >
+              <label htmlFor="liquidationDate" class="text-lg font-bold text-800 required-field"> {{ labels.liquidationDate }} </label>
+            </p-float-label>
+          </div>
+          
+          <div class="form-group field mt-3 col-6">
+            <p-float-label>
+              <p-select
+                inputId="supplierId"
+                formControlName="supplierId"
+                [options]="suppliers"
+                optionLabel="name"
+                optionValue="id"
+                [filter]="true"
+                filterBy="value"
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+              <label for="supplierId" class="text-lg font-bold text-800 required-field"> {{ labels.supplier }} </label>
+            </p-float-label>
+          </div>
+          
+          <div class="form-group field mt-3 col-6">
+            <p-float-label>
+              <p-select
+                inputId="cooperativeId"
+                formControlName="cooperativeId"
+                [options]="suppliers"
+                optionLabel="name"
+                optionValue="id"
+                [filter]="true"
+                filterBy="value"
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+              <label for="cooperativeId" class="text-lg font-bold text-800 required-field"> {{ labels.cooperative }} </label>
+            </p-float-label>
+          </div>
+
+          <div class="form-group field mt-3 col-6">
+            <p-float-label>
+              <p-select
+                inputId="mineId"
+                formControlName="mineId"
+                [options]="suppliers"
+                optionLabel="name"
+                optionValue="id"
+                [filter]="true"
+                filterBy="value"
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+              <label for="mineId" class="text-lg font-bold text-800 required-field"> {{ labels.mine }} </label>
+            </p-float-label>
+          </div>
+
+          <div class="form-group field mt-3 col-3">
+            <p-float-label>
+              <p-inputNumber
+                id="exchangeRate"
+                mode="decimal" 
+                locale="en-US"
+                [minFractionDigits]="2" 
+                [maxFractionDigits]="2"
+                [useGrouping]="false"
+                [min]="0"
+                formControlName="exchangeRate"
+                styleClass="w-full"
+              />
+              <label htmlFor="exchangeRate" class="text-lg font-bold text-800 required-field"> {{ labels.exchangeRate }} </label>
+            </p-float-label>
+          </div>
+          
+
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <div class="p-2 pb-3">
+            <button
+              type="button"
+              pButton pRipple
+              [label]="buttons.cancel"
+              icon="pi pi-times"
+              severity="secondary"
+              [rounded]="true"
+              size="small"
+              class="mr-2 shadow-3"
+              (click)="hideModal()"
+            ></button>
+            <button
+              pButton pRipple
+              [label]="buttons.save"
+              icon="pi pi-check"
+              [rounded]="true"
+              size="small"
+              class="mr-2 shadow-3 hover-primary"
+              (click)="saveLiquidation()"
+              [disabled]="formLiquidation.invalid">
+            </button>
+          </div>
+        </ng-template>
+      </p-dialog>
+    </div>
+  </div>
+</form>
