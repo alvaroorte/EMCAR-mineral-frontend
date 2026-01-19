@@ -28,22 +28,22 @@ export class FormUtils {
       });
    }
 
-   static getDefaultMaterialFormGroup(): FormGroup {
+   static getDefaultMineralFormGroup(): FormGroup {
       return new FormGroup({
          name: new FormControl<string>('', [
             Validators.required,
             Validators.pattern(regex.fieldName),
-            Validators.minLength(LIMITS.minLength),
+            Validators.minLength(LIMITS.minLengthCode),
             noSpaceValidator,
          ]),
-         description: new FormControl<string>('', [
+         symbol: new FormControl<string>('', [
             Validators.required,
             noSpaceValidator,
          ]),
       });
    }
 
-   static getDefaultTypeMaterialFormGroup(): FormGroup {
+   static getDefaultTypeMineralFormGroup(): FormGroup {
       return new FormGroup({
          name: new FormControl<string>('', [
             Validators.required,
@@ -51,7 +51,7 @@ export class FormUtils {
             Validators.minLength(LIMITS.minLength),
             noSpaceValidator,
          ]),
-         description: new FormControl<string>('', [
+         symbol: new FormControl<string>('', [
             Validators.required,
             noSpaceValidator,
          ]),
@@ -76,7 +76,7 @@ export class FormUtils {
          assignment: new FormControl<LOT_ASSIGNMENT>(LOT_ASSIGNMENT.RECEPTION, [
             Validators.required,
          ]),
-         state: new FormControl<string>('', [Validators.required]),
+         state: new FormControl<boolean>(true, [Validators.required]),
       });
    }
 
@@ -180,8 +180,8 @@ export class FormUtils {
          date: new FormControl<string>(null, [Validators.required]),
          lotId: new FormControl<number>(null, [Validators.required]),
          correlativeLotCode: new FormControl<string>('', [Validators.required]),
-         materialId: new FormControl<number>(null, [Validators.required]),
-         typeMaterialId: new FormControl<number>(null, [Validators.required]),
+         mineralId: new FormControl<number>(null, [Validators.required]),
+         typeMineralId: new FormControl<number>(null, [Validators.required]),
          weight: new FormControl<number>(null, [Validators.required]),
          numberSacks: new FormControl<number>(null, [Validators.required]),
          mineId: new FormControl<number>(null),
@@ -198,10 +198,10 @@ export class FormUtils {
          date: new FormControl<string>('', [Validators.required]),
          amount: new FormControl<number>(null, [Validators.required]),
          concept: new FormControl<number>(null, [Validators.required]),
-         paymentType: new FormControl<number>(null, [Validators.required]),
-         paymentChanel: new FormControl<number>(null, [Validators.required]),
-         checkNumber: new FormControl<number>(null),
-         observation: new FormControl<number>(null),
+         paymentType: new FormControl<string>('', [Validators.required]),
+         paymentChanel: new FormControl<string>('', [Validators.required]),
+         checkNumber: new FormControl<string>(''),
+         observation: new FormControl<string>(''),
       });
    }
 

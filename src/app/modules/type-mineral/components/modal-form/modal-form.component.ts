@@ -7,9 +7,8 @@ import { TypeSubmitEnum } from '@core/enums/type-submit';
 import { GenericTableComponent } from '@shared/components/generic-table/generic-table.component';
 import { FormUtils } from '@core/utils/form-groups';
 import { SEVERITY_ENUM } from '@core/enums/severity.enum';
-import { LotService } from '../../services/lot.service';
-import { Lot } from '@core/interfaces/lot.interface';
-import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
+import { TypeMineralService } from '../../services/type-mineral.service';
+import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 
 @Component({
    selector: 'app-modal-form',
@@ -18,22 +17,23 @@ import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
 })
 export class ModalFormComponent {
    private helpersService = inject(HelpersService);
-   private lotService = inject(LotService);
+   private typeMineralService = inject(TypeMineralService);
 
    public readonly labels = LABELS;
    public readonly messages = MESSAGES;
    public readonly buttons = LABEL_BUTTONS;
-   public selectedLot: Lot;
+   public selectedTypeMineral: TypeMineral;
    public openModal: boolean = false;
    public tittleForm: string = '';
-   public formLot: FormGroup = FormUtils.getDefaultLLotFormGroup();
-   private tableComponent: GenericTableComponent<Lot>;
+   public formTypeMineral: FormGroup =
+      FormUtils.getDefaultTypeMineralFormGroup();
+   private tableComponent: GenericTableComponent<TypeMineral>;
    private isEdit = signal<boolean>(false);
 
    ngOnInit() {
       this.registerTableComponentListener();
       this.waitForDataSelection();
-      this.lotService.eventFormComponent.emit(this);
+      this.typeMineralService.eventFormComponent.emit(this);
    }
 
    public hideModal() {
@@ -42,19 +42,15 @@ export class ModalFormComponent {
 
    private openCreate() {
       this.reset();
-      this.formLot.patchValue({
-         assignment: LOT_ASSIGNMENT.RECEPTION,
-         state: true,
-      });
-      this.tittleForm = 'Crear lote';
+      this.tittleForm = 'Crear tipo de mineral';
       this.isEdit.set(false);
       this.openModal = true;
    }
 
    private openEdit(id: number) {
       this.reset();
-      this.tittleForm = 'Editar lote';
-      this.lotService.findById(id).subscribe({
+      this.tittleForm = 'Editar tipo de mineral';
+      this.typeMineralService.findById(id).subscribe({
          next: (res) => {
             this.isEdit.set(true);
             this.openModal = true;
@@ -63,14 +59,14 @@ export class ModalFormComponent {
       });
    }
 
-   private updateFormValues(lote: Lot) {
-      this.formLot.patchValue({
-         ...lote,
+   private updateFormValues(TypeMineral: TypeMineral) {
+      this.formTypeMineral.patchValue({
+         ...TypeMineral,
       });
    }
 
-   public saveLot() {
-      if (this.formLot.valid) {
+   public saveTypeMineral() {
+      if (this.formTypeMineral.valid) {
          this.isEdit()
             ? this.submit(TypeSubmitEnum.UPDATE)
             : this.submit(TypeSubmitEnum.CREATE);
@@ -78,17 +74,17 @@ export class ModalFormComponent {
    }
 
    private reset(): void {
-      this.formLot.reset();
+      this.formTypeMineral.reset();
    }
 
    private submit(type: TypeSubmitEnum) {
-      const data: Lot = {
-         ...this.formLot.value,
+      const data: TypeMineral = {
+         ...this.formTypeMineral.value,
       };
       const service =
          type == TypeSubmitEnum.CREATE
-            ? this.lotService.create(data)
-            : this.lotService.update(this.selectedLot.id, data);
+            ? this.typeMineralService.create(data)
+            : this.typeMineralService.update(this.selectedTypeMineral.id, data);
       service.subscribe({
          next: () => {
             const message =
@@ -110,14 +106,16 @@ export class ModalFormComponent {
    }
 
    private registerTableComponentListener() {
-      this.lotService.eventTableComponent.subscribe((tableComponent) => {
-         this.tableComponent = tableComponent;
-      });
+      this.typeMineralService.eventTableComponent.subscribe(
+         (tableComponent) => {
+            this.tableComponent = tableComponent;
+         },
+      );
    }
 
    private waitForDataSelection() {
-      this.lotService
+      this.typeMineralService
          .getSelectedRow()
-         .subscribe((Lot) => (this.selectedLot = Lot));
+         .subscribe((TypeMineral) => (this.selectedTypeMineral = TypeMineral));
    }
 }

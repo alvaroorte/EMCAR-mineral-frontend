@@ -5,13 +5,13 @@ export interface Liquidation extends DataBase {
    id: number;
    supplierId: number;
    lotId: number;
-   materialId: number;
+   mineralId: number;
    mineId: number;
    cooperativeId: number;
    externalLot: string;
    correlativeLotCode: string;
    supplierName: string;
-   materialName: string;
+   mineralName: string;
    mineName: string;
    cooperativeName: string;
    cajaNacional: number;

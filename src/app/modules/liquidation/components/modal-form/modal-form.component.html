@@ -2,13 +2,13 @@
 
   <div class="grid">
     <div class="col-12">
-      <p-dialog [(visible)]="openModal" styleClass="w-10" [header]="tittleForm" [modal]="true" class="p-fluid">
+      <p-dialog [(visible)]="openModal" styleClass="w-11" [header]="tittleForm" [modal]="true" class="p-fluid">
         <ng-template pTemplate="content">
 
           <app-message-required-field></app-message-required-field>
 
           <div class="grid">
-            <div class="form-group field mt-3 col-6">
+            <div class="form-group field mt-6 col-3">
               <p-float-label>
                 <p-select
                   inputId="liquidationType"
@@ -20,12 +20,13 @@
                   filterBy="value"
                   styleClass="w-full"
                   appendTo="body"
+                  (onChange)="onChagedLiquidationType()"
                 ></p-select>
                 <label for="liquidationType" class="text-lg font-bold text-800 required-field"> {{ labels.liquidationType }} </label>
               </p-float-label>
             </div>
             
-            <div class="form-group field mt-3 col-6">
+            <div class="form-group field mt-6 col-3">
               <p-float-label>
                 <p-select
                   inputId="loadId"
@@ -37,12 +38,39 @@
                   filterBy="value"
                   styleClass="w-full"
                   appendTo="body"
-                ></p-select>
+                  (onChange)="onChagedLoad()"
+                >
+                  <ng-template let-lot #item>
+                    <div class="border-bottom-1 border-primary pb-2">
+                      <div>
+                        {{ labels.lot }}: 
+                        <b>{{ lot.correlativeLotCode }}</b> 
+                      </div>
+                      <div>
+                        {{ labels.supplier }}: 
+                        <b>{{ lot.supplierName }}</b> 
+                      </div>
+                      <div>
+                        {{ labels.weight }}: 
+                        <b>{{ lot.weight | formatFieldAmount }}</b> 
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-select>
                 <label for="loadId" class="text-lg font-bold text-800 required-field"> {{ labels.loads }} </label>
               </p-float-label>
             </div>
+            
+            <div class="form-group field mt-6 col-3">
+              <p-float-label>
+                <div [ngClass]="['p-2 non-editable-field flex align-items-center', lot?.prefix? 'p-inputwrapper-filled': '']">
+                  {{ lot?.prefix || ''  }}
+                </div>
+                <label class="text-lg font-bold text-800 required-field"> {{ labels.lot }} </label>
+              </p-float-label>
+            </div>
   
-            <div class="form-group field mt-5 col-6">
+            <div class="form-group field mt-6 col-3">
               <p-float-label>
                 <p-datepicker 
                   id="admissionDate"
@@ -56,7 +84,7 @@
               </p-float-label>
             </div>
   
-            <div class="form-group field mt-5 col-6">
+            <div class="form-group field mt-4 col-3">
               <p-float-label>
                 <p-datepicker 
                   id="liquidationDate"
@@ -70,16 +98,16 @@
               </p-float-label>
             </div>
             
-            <div class="form-group field mt-3 col-6">
+            <div class="form-group field mt-4 col-3">
               <p-float-label>
                 <p-select
                   inputId="supplierId"
                   formControlName="supplierId"
                   [options]="suppliers"
-                  optionLabel="name"
+                  optionLabel="fullName"
                   optionValue="id"
                   [filter]="true"
-                  filterBy="value"
+                  filterBy="fullName"
                   styleClass="w-full"
                   appendTo="body"
                 ></p-select>
@@ -87,7 +115,7 @@
               </p-float-label>
             </div>
             
-            <div class="form-group field mt-3 col-6">
+            <div class="form-group field mt-4 col-3">
               <p-float-label>
                 <p-select
                   inputId="cooperativeId"
@@ -95,16 +123,18 @@
                   [options]="cooperatives"
                   optionLabel="name"
                   optionValue="id"
+                  [showClear]="formLiquidation.value.liquidationType == liquidationTypes.PARTICULAR"
                   [filter]="true"
                   filterBy="value"
                   styleClass="w-full"
                   appendTo="body"
+                  (onChange)="onChangedCooperative()"
                 ></p-select>
-                <label for="cooperativeId" class="text-lg font-bold text-800 required-field"> {{ labels.cooperative }} </label>
+                <label for="cooperativeId" [ngClass]="['text-lg font-bold text-800', formLiquidation.value.liquidationType == liquidationTypes.COOPERATIVE? 'required-field': '']"> {{ labels.cooperative }} </label>
               </p-float-label>
             </div>
   
-            <div class="form-group field mt-3 col-6">
+            <div class="form-group field mt-4 col-3">
               <p-float-label>
                 <p-select
                   inputId="mineId"
@@ -112,12 +142,13 @@
                   [options]="mines"
                   optionLabel="name"
                   optionValue="id"
+                  [showClear]="formLiquidation.value.liquidationType == liquidationTypes.PARTICULAR"
                   [filter]="true"
                   filterBy="value"
                   styleClass="w-full"
                   appendTo="body"
                 ></p-select>
-                <label for="mineId" class="text-lg font-bold text-800 required-field"> {{ labels.mine }} </label>
+                <label for="mineId" [ngClass]="['text-lg font-bold text-800', formLiquidation.value.liquidationType == liquidationTypes.COOPERATIVE? 'required-field': '']"> {{ labels.mine }} </label>
               </p-float-label>
             </div>
   
@@ -135,6 +166,7 @@
                   [min]="0"
                   formControlName="exchangeRate"
                   styleClass="w-full"
+                  (onInput)="calculateTotalsPriceAndLaws()"
                 />
                 <label htmlFor="exchangeRate" class="text-lg font-bold text-800 required-field"> {{ labels.exchangeRate }} </label>
               </p-float-label>
@@ -152,26 +184,12 @@
                   [(ngModel)]="metricWetKilograms"
                   [ngModelOptions]="{standalone: true}"
                   styleClass="w-full"
+                  (onInput)="onChangedWetKilograms()"
                 />
                 <label htmlFor="metricWetKilograms" class="text-lg font-bold text-800 required-field"> {{ labels.metricWetKilograms }} </label>
               </p-float-label>
             </div>
-            <div class="form-group field mt-3 col-3">
-              <p-float-label>
-                <p-inputNumber
-                  id="metricWetTonnes"
-                  mode="decimal" 
-                  locale="en-US"
-                  [minFractionDigits]="2" 
-                  [maxFractionDigits]="2"
-                  [useGrouping]="false"
-                  [min]="0"
-                  formControlName="metricWetTonnes"
-                  styleClass="w-full"
-                />
-                <label htmlFor="metricWetTonnes" class="text-lg font-bold text-800 required-field"> {{ labels.metricWetTonnes }} </label>
-              </p-float-label>
-            </div>
+            
             <div class="form-group field mt-3 col-3">
               <p-float-label>
                 <p-inputNumber
@@ -184,410 +202,441 @@
                   [min]="0"
                   formControlName="humidityPercentage"
                   styleClass="w-full"
+                  (onInput)="calculateSolidMetricWetTonnes()"
                 />
                 <label htmlFor="humidityPercentage" class="text-lg font-bold text-800 required-field"> {{ labels.humidityPercentage }} </label>
               </p-float-label>
             </div>
+
+            <div class="form-group field mt-3 col-1">
+              <p-float-label>
+                <div [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">
+                  {{ solidMetricWetTonnes * 1000 | formatFieldAmount }}
+                </div>
+                <label class="text-lg font-bold text-800 required-field"> {{ labels.solidMetricWetKilograms }} </label>
+              </p-float-label>
+            </div>
+            <div class="form-group field mt-3 col-1">
+              <p-float-label>
+                <div [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">
+                  {{ solidMetricWetTonnes | formatFieldAmount }}
+                </div>
+                <label class="text-lg font-bold text-800 required-field"> {{ labels.solidMetricWetTonnes }} </label>
+              </p-float-label>
+            </div>
           </div>
-          <div class="grid">
-            <table class="mt-4 w-full">
-            <thead>
-              <tr>
-                <th class="w-4 text-lg font-semibold">Mineral</th>
-                <th class="w-3 text-lg font-semibold">Precio (USD)</th>
-                <th class="w-3 text-lg font-semibold">Ley</th>
-                <th class="w-2 text-lg font-semibold">Sub Total (USD)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.silver }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="priceSilver"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="0"
-                    formControlName="priceSilver"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-center">
-                  <p-inputNumber
-                    id="lawSilver"
-                    [useGrouping]="false"
-                    [min]="1"
-                    formControlName="lawSilver"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ totalSilver | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.zinc }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="priceZinc"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="0"
-                    formControlName="priceZinc"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-center">
-                  <p-inputNumber
-                    id="lawZinc"
-                    [useGrouping]="false"
-                    [min]="1"
-                    formControlName="lawZinc"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ totalZinc | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.lead }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="priceLead"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="0"
-                    formControlName="priceLead"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-center">
-                  <p-inputNumber
-                    id="lawLead"
-                    [useGrouping]="false"
-                    [min]="1"
-                    formControlName="lawLead"
-                    styleClass="w-full"
-                    (onInput)="calculateTotals()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ totalLead | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="3">{{ labels.total }} USD</td>
-                <td class="text-right">
-                  {{ totalMineralsUsd | formatFieldAmount }}
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="3">{{ labels.total }} Bs</td>
-                <td class="text-right">
-                  {{ totalMineralsBs | formatFieldAmount }}
-                </td>
-              </tr>
-              
-            </tbody>
-            </table>
-          </div>
-          
-          <div class="grid">
-            <table class="mt-4 w-full">
-            <thead>
-              <tr>
-                <th class="w-5 text-lg font-semibold">Concepto del descuento</th>
-                <th class="w-4 text-lg font-semibold">Porcentaje</th>
-                <th class="w-3 text-lg font-semibold">Sub Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.rmPercentage }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="miningRoyalties"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="miningRoyalties"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ miningRoyaltiesDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.royaltySilver }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="quotationSilver"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="quotationSilver"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ quotationSilverDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.royaltyZinc }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="quotationZinc"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="quotationZinc"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ quotationZincDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.royaltyLead }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="quotationLead"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="quotationLead"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ quotationLeadDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.cajaNacional }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="cajaNacional"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="cajaNacional"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ cajaNacionalDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.fedecomin }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="fedecomin"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="fedecomin"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ fedecominDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.fencomin }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="fencomin"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="fencomin"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ fencominDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.comibol }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="comibol"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="comibol"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ comibolDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4 class="text-center mr-4">{{ labels.cooperativeContribution }}</h4>
-                </td>
-                <td>
-                  <p-inputNumber
-                    id="cooperativeContribution"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="cooperativeContribution"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-                <td class="text-right">
-                  <h4>{{ cooperativeContributionDiscount | formatFieldAmount }}</h4>
-                </td>
-              </tr>
-              
-              <tr>
-                <td class="text-right" colspan="2">{{ labels.firstAdvance }} Bs</td>
-                <td>
-                  <p-inputNumber
-                    id="firstAdvance"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="firstAdvance"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="2">{{ labels.secondAdvance }} Bs</td>
-                <td>
-                  <p-inputNumber
-                    id="secondAdvance"
-                    mode="decimal" 
-                    locale="en-US"
-                    [minFractionDigits]="2" 
-                    [maxFractionDigits]="2"
-                    [useGrouping]="false"
-                    [min]="limits.minPercent"
-                    [max]="limits.maxPercent"
-                    formControlName="secondAdvance"
-                    styleClass="w-full"
-                    (onInput)="calculateDiscounts()"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="3">{{ labels.totalDiscounts }} Bs</td>
-                <td class="text-right">
-                  {{ totalDiscounts | formatFieldAmount }}
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="3">{{ labels.liquidPayable }} Bs</td>
-                <td class="text-right">
-                  {{ liquidPayableBs | formatFieldAmount }}
-                </td>
-              </tr>
-              <tr>
-                <td class="text-right" colspan="3">{{ labels.liquidPayable }} USD</td>
-                <td class="text-right">
-                  {{ liquidPayableUsd | formatFieldAmount }}
-                </td>
-              </tr>
-              
-            </tbody>
-            </table>
+          <div class="grid mt-3">
+            <div class="col-6">
+              <h3 class="text-center text-xl font-bold">Precios y leyes</h3>
+              <table class="mt-2 w-full border-1 border-round border-solid pr-3 py-3 surface-ground">
+              <thead>
+                <tr>
+                  <th class="w-4 text-lg font-semibold">Mineral</th>
+                  <th class="w-3 text-lg font-semibold">Precio (USD)</th>
+                  <th class="w-3 text-lg font-semibold">Ley</th>
+                  <th class="w-2 text-lg font-semibold text-right">Sub Total (USD)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <h4 class="text-center mr-4">{{ labels.silver }}</h4>
+                  </td>
+                  <td>
+                    <p-inputNumber
+                      id="priceSilver"
+                      mode="decimal" 
+                      locale="en-US"
+                      [minFractionDigits]="2" 
+                      [maxFractionDigits]="2"
+                      [useGrouping]="false"
+                      [min]="0"
+                      formControlName="priceSilver"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-center">
+                    <p-inputNumber
+                      id="lawSilver"
+                      [useGrouping]="false"
+                      [min]="1"
+                      formControlName="lawSilver"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-right">
+                    <h4>{{ totalSilver | formatFieldAmount }}</h4>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h4 class="text-center mr-4">{{ labels.zinc }}</h4>
+                  </td>
+                  <td>
+                    <p-inputNumber
+                      id="priceZinc"
+                      mode="decimal" 
+                      locale="en-US"
+                      [minFractionDigits]="2" 
+                      [maxFractionDigits]="2"
+                      [useGrouping]="false"
+                      [min]="0"
+                      formControlName="priceZinc"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-center">
+                    <p-inputNumber
+                      id="lawZinc"
+                      [useGrouping]="false"
+                      [min]="1"
+                      formControlName="lawZinc"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-right">
+                    <h4>{{ totalZinc | formatFieldAmount }}</h4>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h4 class="text-center mr-4">{{ labels.lead }}</h4>
+                  </td>
+                  <td>
+                    <p-inputNumber
+                      id="priceLead"
+                      mode="decimal" 
+                      locale="en-US"
+                      [minFractionDigits]="2" 
+                      [maxFractionDigits]="2"
+                      [useGrouping]="false"
+                      [min]="0"
+                      formControlName="priceLead"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-center">
+                    <p-inputNumber
+                      id="lawLead"
+                      [useGrouping]="false"
+                      [min]="1"
+                      formControlName="lawLead"
+                      styleClass="w-full"
+                      (onInput)="calculateTotalsPriceAndLaws()"
+                    />
+                  </td>
+                  <td class="text-right">
+                    <h4>{{ totalLead | formatFieldAmount }}</h4>
+                  </td>
+                </tr>
+                <tr class="font-bold text-lg">
+                  <td class="text-right pt-3" colspan="3">{{ labels.total }} USD</td>
+                  <td class="text-right">
+                    {{ totalMineralsUsd | formatFieldAmount }}
+                  </td>
+                </tr>
+                <tr class="font-bold text-lg">
+                  <td class="text-right pt-3" colspan="3">{{ labels.total }} Bs</td>
+                  <td class="text-right">
+                    {{ totalMineralsBs | formatFieldAmount }}
+                  </td>
+                </tr>
+                <tr class="font-bold text-lg">
+                  <td class="text-right pt-3" colspan="3">{{ labels.totalImport }} Bs</td>
+                  <td class="text-right">
+                    {{ totalImportBs | formatFieldAmount }}
+                  </td>
+                </tr>
+                
+              </tbody>
+              </table>
+            </div>
+            <div class="col-6">
+              <h3 class="text-center text-xl font-bold">{{ labels.discounts }}</h3>
+              <table class="mt-2 border-1 border-round border-solid pr-3 py-3 surface-ground">
+                <thead>
+                  <tr>
+                    <th class="w-5 text-lg font-semibold">Concepto</th>
+                    <th class="w-5 text-lg font-semibold">Porcentaje %</th>
+                    <th class="w-2 text-lg font-semibold text-right">Sub Total (Bs)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.rmPercentage }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="miningRoyalties"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="miningRoyalties"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ miningRoyaltiesDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.royaltySilver }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="quotationSilver"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="quotationSilver"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ quotationSilverDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.royaltyZinc }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="quotationZinc"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="quotationZinc"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ quotationZincDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.royaltyLead }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="quotationLead"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="quotationLead"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ quotationLeadDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.cajaNacional }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="cajaNacional"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="cajaNacional"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ cajaNacionalDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.comibol }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="comibol"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="comibol"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ comibolDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.fedecomin }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="fedecomin"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="fedecomin"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ fedecominDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.fencomin }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="fencomin"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="fencomin"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ fencominDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.cooperativeContribution }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber
+                        id="cooperativeContribution"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="limits.minPercent"
+                        [max]="limits.maxPercent"
+                        formControlName="cooperativeContribution"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ cooperativeContributionDiscount | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">
+                      <h4>{{ labels.firstAdvance }}</h4>
+                    </td>
+                    <td class="text-center">-</td>
+                    <td>
+                      <p-inputNumber
+                        id="firstAdvance"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="0"
+                        formControlName="firstAdvance"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">
+                      <h4>{{ labels.secondAdvance }}</h4>
+                    </td>
+                    <td class="text-center">-</td>
+                    <td>
+                      <p-inputNumber
+                        id="secondAdvance"
+                        mode="decimal" 
+                        locale="en-US"
+                        [minFractionDigits]="2" 
+                        [maxFractionDigits]="2"
+                        [useGrouping]="false"
+                        [min]="0"
+                        formControlName="secondAdvance"
+                        styleClass="w-full"
+                        (onInput)="calculateDiscounts()"
+                      />
+                    </td>
+                  </tr>
+                  <tr class="font-bold text-xl">
+                    <td class="text-right pt-4" colspan="2">{{ labels.totalDiscounts }} Bs</td>
+                    <td class="text-right">
+                      {{ totalDiscountsBs | formatFieldAmount }}
+                    </td>
+                  </tr>
+                  <tr class="font-bold text-xl">
+                    <td class="text-right pt-2" colspan="2">{{ labels.liquidPayable }} Bs</td>
+                    <td class="text-right">
+                      {{ liquidPayableBs | formatFieldAmount }}
+                    </td>
+                  </tr>
+                  <tr class="font-bold text-xl">
+                    <td class="text-right pt-2" colspan="2">{{ labels.liquidPayable }} USD</td>
+                    <td class="text-right">
+                      {{ liquidPayableUsd | formatFieldAmount }}
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+            
           </div>
           
 

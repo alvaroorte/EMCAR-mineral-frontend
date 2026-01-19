@@ -2,10 +2,10 @@ import { Company } from '@core/interfaces/company.interface';
 import { LABELS } from '../constants/labels';
 import { TableColumnType } from '../enums/table-column-type.enum';
 import { TableColumn } from '../interfaces/table-column-interface';
-import { Material } from '@core/interfaces/material.interface';
+import { Mineral } from '@core/interfaces/mineral.interface';
 import { Mine } from '@core/interfaces/mine.interface';
 import { Supplier } from '@core/interfaces/supplier.interface';
-import { TypeMaterial } from '@core/interfaces/type-material.interface';
+import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 import { Lot } from '@core/interfaces/lot.interface';
 import { Cooperative } from '@core/interfaces/cooperative.interface';
 import { Load } from '@core/interfaces/load.interface';
@@ -54,7 +54,7 @@ export class TableColumnDefinitions {
       ];
    }
 
-   static getDefaultMaterialColumnsDefinitions(): TableColumn<Material>[] {
+   static getDefaultMineralColumnsDefinitions(): TableColumn<Mineral>[] {
       return [
          {
             field: 'name',
@@ -62,8 +62,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'description',
-            header: LABELS.description,
+            field: 'symbol',
+            header: LABELS.symbol,
             columnType: TableColumnType.TEXT,
          },
       ];
@@ -139,7 +139,7 @@ export class TableColumnDefinitions {
       ];
    }
 
-   static getDefaultTypeMaterialColumnsDefinitions(): TableColumn<TypeMaterial>[] {
+   static getDefaultTypeMineralColumnsDefinitions(): TableColumn<TypeMineral>[] {
       return [
          {
             field: 'name',
@@ -147,8 +147,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'description',
-            header: LABELS.description,
+            field: 'symbol',
+            header: LABELS.symbol,
             columnType: TableColumnType.TEXT,
          },
       ];
@@ -222,8 +222,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'materialName',
-            header: LABELS.materials,
+            field: 'mineralName',
+            header: LABELS.minerals,
             columnType: TableColumnType.TEXT,
          },
          {
@@ -250,6 +250,7 @@ export class TableColumnDefinitions {
             field: 'observation',
             header: LABELS.observation,
             columnType: TableColumnType.TEXT,
+            initiallyHidden: true,
          },
          {
             field: 'createdBy',
@@ -328,8 +329,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'materialName',
-            header: LABELS.materials,
+            field: 'mineralName',
+            header: LABELS.minerals,
             columnType: TableColumnType.TEXT,
          },
          {

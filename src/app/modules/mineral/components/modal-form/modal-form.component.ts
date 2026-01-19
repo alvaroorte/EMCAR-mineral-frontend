@@ -7,9 +7,8 @@ import { TypeSubmitEnum } from '@core/enums/type-submit';
 import { GenericTableComponent } from '@shared/components/generic-table/generic-table.component';
 import { FormUtils } from '@core/utils/form-groups';
 import { SEVERITY_ENUM } from '@core/enums/severity.enum';
-import { LotService } from '../../services/lot.service';
-import { Lot } from '@core/interfaces/lot.interface';
-import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
+import { MineralService } from '../../services/mineral.service';
+import { Mineral } from '@core/interfaces/mineral.interface';
 
 @Component({
    selector: 'app-modal-form',
@@ -18,22 +17,22 @@ import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
 })
 export class ModalFormComponent {
    private helpersService = inject(HelpersService);
-   private lotService = inject(LotService);
+   private mineralService = inject(MineralService);
 
    public readonly labels = LABELS;
    public readonly messages = MESSAGES;
    public readonly buttons = LABEL_BUTTONS;
-   public selectedLot: Lot;
+   public selectedMineral: Mineral;
    public openModal: boolean = false;
    public tittleForm: string = '';
-   public formLot: FormGroup = FormUtils.getDefaultLLotFormGroup();
-   private tableComponent: GenericTableComponent<Lot>;
+   public formMineral: FormGroup = FormUtils.getDefaultMineralFormGroup();
+   private tableComponent: GenericTableComponent<Mineral>;
    private isEdit = signal<boolean>(false);
 
    ngOnInit() {
       this.registerTableComponentListener();
       this.waitForDataSelection();
-      this.lotService.eventFormComponent.emit(this);
+      this.mineralService.eventFormComponent.emit(this);
    }
 
    public hideModal() {
@@ -42,19 +41,15 @@ export class ModalFormComponent {
 
    private openCreate() {
       this.reset();
-      this.formLot.patchValue({
-         assignment: LOT_ASSIGNMENT.RECEPTION,
-         state: true,
-      });
-      this.tittleForm = 'Crear lote';
+      this.tittleForm = 'Crear mineral';
       this.isEdit.set(false);
       this.openModal = true;
    }
 
    private openEdit(id: number) {
       this.reset();
-      this.tittleForm = 'Editar lote';
-      this.lotService.findById(id).subscribe({
+      this.tittleForm = 'Editar mineral';
+      this.mineralService.findById(id).subscribe({
          next: (res) => {
             this.isEdit.set(true);
             this.openModal = true;
@@ -63,14 +58,14 @@ export class ModalFormComponent {
       });
    }
 
-   private updateFormValues(lote: Lot) {
-      this.formLot.patchValue({
-         ...lote,
+   private updateFormValues(Mineral: Mineral) {
+      this.formMineral.patchValue({
+         ...Mineral,
       });
    }
 
-   public saveLot() {
-      if (this.formLot.valid) {
+   public saveMineral() {
+      if (this.formMineral.valid) {
          this.isEdit()
             ? this.submit(TypeSubmitEnum.UPDATE)
             : this.submit(TypeSubmitEnum.CREATE);
@@ -78,17 +73,17 @@ export class ModalFormComponent {
    }
 
    private reset(): void {
-      this.formLot.reset();
+      this.formMineral.reset();
    }
 
    private submit(type: TypeSubmitEnum) {
-      const data: Lot = {
-         ...this.formLot.value,
+      const data: Mineral = {
+         ...this.formMineral.value,
       };
       const service =
          type == TypeSubmitEnum.CREATE
-            ? this.lotService.create(data)
-            : this.lotService.update(this.selectedLot.id, data);
+            ? this.mineralService.create(data)
+            : this.mineralService.update(this.selectedMineral.id, data);
       service.subscribe({
          next: () => {
             const message =
@@ -110,14 +105,14 @@ export class ModalFormComponent {
    }
 
    private registerTableComponentListener() {
-      this.lotService.eventTableComponent.subscribe((tableComponent) => {
+      this.mineralService.eventTableComponent.subscribe((tableComponent) => {
          this.tableComponent = tableComponent;
       });
    }
 
    private waitForDataSelection() {
-      this.lotService
+      this.mineralService
          .getSelectedRow()
-         .subscribe((Lot) => (this.selectedLot = Lot));
+         .subscribe((Mineral) => (this.selectedMineral = Mineral));
    }
 }
