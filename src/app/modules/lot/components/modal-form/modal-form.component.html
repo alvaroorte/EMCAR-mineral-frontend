@@ -18,9 +18,6 @@
             @if (formLot.get('prefix')?.hasError('pattern')) {
               <small class="p-error block mt-2">{{ messages.deniedCharactersCode }}</small>
             }
-            @if (formLot.get('prefix')?.hasError('minlength')) {
-              <small class="p-error block mt-2">{{ messages.requiredMinLengthCode }}</small>
-            }
             @if (formLot.get('prefix')?.hasError('noSpace')) {
               <small class="p-error block mt-2">{{ messages.noOnlySpace }}</small>
             }

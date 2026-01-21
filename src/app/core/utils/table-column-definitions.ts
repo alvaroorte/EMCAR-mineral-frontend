@@ -195,6 +195,7 @@ export class TableColumnDefinitions {
             field: 'supplierGroup',
             header: LABELS.supplierGroup,
             columnType: TableColumnType.TEXT,
+            initiallyHidden: true,
          },
       ];
    }

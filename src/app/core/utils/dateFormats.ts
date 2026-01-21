@@ -1,6 +1,6 @@
-export const toDMYdateFormat = (date: string) => {
+export const transformDateBackToDateFront = (date: string): Date => {
   const [year, month, day] = date.split('-');
-  return `${day}/${month}/${year}`;
+  return new Date(`${year}/${month}/${day}`);
 }
 
 export const toYMDdateFormat = (date: string) => {

@@ -26,7 +26,7 @@ export class SupplierService extends CrudService<Supplier> implements IServiceCo
 
   public getSelect(some: string = '') {
     const params = new HttpParams().set('some', some);
-    return this.request(this.http.get<SupplierSelect[]>(`${this.url}/select`, { params }));
+    return this.http.get<SupplierSelect[]>(`${this.url}/select`, { params });
   }
 
 }

@@ -63,7 +63,6 @@ export class FormUtils {
          prefix: new FormControl<string>('', [
             Validators.required,
             Validators.pattern(regex.fieldCode),
-            Validators.minLength(LIMITS.minLengthCode),
             noSpaceValidator,
          ]),
          description: new FormControl<string>('', [
@@ -115,7 +114,10 @@ export class FormUtils {
             Validators.minLength(LIMITS.minLengthDocument),
             noSpaceValidator,
          ]),
-         address: new FormControl<string>('', [noSpaceValidator]),
+         address: new FormControl<string>('', [
+            Validators.minLength(LIMITS.minLength),
+            noSpaceValidator,
+         ]),
          supplierGroup: new FormControl<string>(''),
          expeditionPlace: new FormControl<string>(''),
       });
@@ -229,6 +231,9 @@ export class FormUtils {
          quotationSilver: new FormControl<number>(null),
          quotationZinc: new FormControl<number>(null),
          quotationLead: new FormControl<number>(null),
+         royaltySilver: new FormControl<number>(null),
+         royaltyZinc: new FormControl<number>(null),
+         royaltyLead: new FormControl<number>(null),
          cajaNacional: new FormControl<number>(null),
          fedecomin: new FormControl<number>(null),
          fencomin: new FormControl<number>(null),

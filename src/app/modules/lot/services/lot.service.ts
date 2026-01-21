@@ -26,7 +26,7 @@ export class LotService extends CrudService<Lot> implements IServiceCommon {
 
   public getSearch(state: boolean) {
     const params = new HttpParams().set('state', state);
-    return this.request(this.http.get<Lot[]>(`${this.url}/search`, { params }));
+    return this.http.get<Lot[]>(`${this.url}/search`, { params });
   }
 
 }

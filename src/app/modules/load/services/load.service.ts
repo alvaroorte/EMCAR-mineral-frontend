@@ -25,7 +25,7 @@ export class LoadService extends CrudService<Load> implements IServiceCommon {
   }
 
   public getCorrelativeLot(lotId: number) {
-    return this.request(this.http.get<CorrelativeLot>(`${this.url}/correlative/preview/${lotId}`));
+    return this.http.get<CorrelativeLot>(`${this.url}/correlative/preview/${lotId}`);
   }
 
 }

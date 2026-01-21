@@ -21,6 +21,7 @@ import { LIMITS } from '@core/constants/limits';
 import { LotService } from 'src/app/modules/lot/services/lot.service';
 import { Lot } from '@core/interfaces/lot.interface';
 import { SupplierSelect } from '@core/interfaces/supplier.interface';
+import { transformDateBackToDateFront } from '@core/utils/dateFormats';
 
 @Component({
    selector: 'app-modal-form',
@@ -54,23 +55,19 @@ export class ModalFormComponent {
    public totalZinc: number = 0;
    public totalLead: number = 0;
    public miningRoyaltiesDiscount: number = 0;
-   public quotationSilverDiscount: number = 0;
-   public quotationZincDiscount: number = 0;
-   public quotationLeadDiscount: number = 0;
    public cajaNacionalDiscount: number = 0;
    public fedecominDiscount: number = 0;
    public fencominDiscount: number = 0;
    public comibolDiscount: number = 0;
    public cooperativeContributionDiscount: number = 0;
-   public solidMetricWetTonnes: number = 0;
+   public solidMetricTonnes: number = 0;
    public totalMineralsUsd: number = 0;
    public totalMineralsBs: number = 0;
    public totalImportBs: number = 0;
    public totalDiscountsBs: number = 0;
    public liquidPayableBs: number = 0;
    public liquidPayableUsd: number = 0;
-   public formLiquidation: FormGroup =
-      FormUtils.getDefaultLiquidationFormGroup();
+   public formLiquidation: FormGroup = FormUtils.getDefaultLiquidationFormGroup();
    private tableComponent: GenericTableComponent<Liquidation>;
    private isEdit = signal<boolean>(false);
 
@@ -146,10 +143,16 @@ export class ModalFormComponent {
       });
    }
 
-   private updateFormValues(Liquidation: Liquidation) {
+   private updateFormValues(liquidation: Liquidation) {
       this.formLiquidation.patchValue({
-         ...Liquidation,
+         ...liquidation,
+         loadId: 1,
+         admissionDate: transformDateBackToDateFront(liquidation.admissionDate),
+         liquidationDate: transformDateBackToDateFront(liquidation.liquidationDate)
       });
+      this.metricWetKilograms = liquidation.metricWetTonnes * 1000;
+      this.onChagedLoad();
+      this.calculateSolidMetricWetTonnes();
    }
 
    public saveLiquidation() {
@@ -206,149 +209,146 @@ export class ModalFormComponent {
          .subscribe((Liquidation) => (this.selectedLiquidation = Liquidation));
    }
 
-   public calculateTotalsPriceAndLaws() {
-      this.totalSilver =
-         (this.formLiquidation.get('priceSilver').value || 0) *
-         (this.formLiquidation.get('lawSilver').value || 0);
-      this.totalZinc =
-         (this.formLiquidation.get('priceZinc').value || 0) *
-         (this.formLiquidation.get('lawZinc').value || 0);
-      this.totalLead =
-         (this.formLiquidation.get('priceLead').value || 0) *
-         (this.formLiquidation.get('lawLead').value || 0);
-      this.totalMineralsUsd =
-         this.totalSilver + this.totalZinc + this.totalLead;
-      this.totalMineralsBs =
-         this.totalMineralsUsd *
-         (this.formLiquidation.get('exchangeRate').value || 0);
-      this.totalImportBs = this.totalMineralsBs * this.solidMetricWetTonnes;
-      this.calculateDiscounts();
-   }
-
-   public calculateDiscounts() {
-      this.miningRoyaltiesDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('miningRoyalties').value || 0) / 100);
-      this.quotationSilverDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('quotationSilver').value || 0) / 100);
-      this.quotationZincDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('quotationZinc').value || 0) / 100);
-      this.quotationLeadDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('quotationLead').value || 0) / 100);
-      this.cajaNacionalDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('cajaNacional').value || 0) / 100);
-      this.fedecominDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('fedecomin').value || 0) / 100);
-      this.fencominDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('fencomin').value || 0) / 100);
-      this.comibolDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('comibol').value || 0) / 100);
-      this.cooperativeContributionDiscount =
-         this.totalImportBs *
-         ((this.formLiquidation.get('cooperativeContribution').value || 0) /
-            100);
-      this.totalDiscountsBs =
-         this.miningRoyaltiesDiscount +
-         this.quotationSilverDiscount +
-         this.quotationZincDiscount +
-         this.quotationLeadDiscount +
-         this.cajaNacionalDiscount +
-         this.fedecominDiscount +
-         this.fencominDiscount +
-         this.comibolDiscount +
-         this.cooperativeContributionDiscount;
-      this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs;
-      this.liquidPayableUsd =
-         this.liquidPayableBs / this.formLiquidation.value.exchangeRate;
-   }
-
    public onChagedLiquidationType() {
-      if (
-         this.formLiquidation.value.liquidationType ==
-         this.liquidationTypes.COOPERATIVE
-      ) {
-         this.formLiquidation
-            .get('cooperativeId')
-            .addValidators(Validators.required);
+      if (this.formLiquidation.value.liquidationType == this.liquidationTypes.COOPERATIVE) {
+         this.formLiquidation.get('cooperativeId').addValidators(Validators.required);
          this.formLiquidation.get('mineId').addValidators(Validators.required);
       } else {
-         this.formLiquidation
-            .get('cooperativeId')
-            .removeValidators(Validators.required);
-         this.formLiquidation
-            .get('mineId')
-            .removeValidators(Validators.required);
+         this.formLiquidation.get('cooperativeId').removeValidators(Validators.required);
+         this.formLiquidation.get('mineId').removeValidators(Validators.required);
       }
       this.formLiquidation.get('cooperativeId').reset();
       this.formLiquidation.get('mineId').reset();
-   }
-
-   public onChagedLoad() {
-      this.getLotByLoadId();
-      const load: Load = this.loads.find(
-         (l) => l.id == this.formLiquidation.value.loadId,
-      );
-      this.metricWetKilograms = load.weight;
-      this.formLiquidation.patchValue({
-         admissionDate: new Date(load.date + ' '),
-         supplierId: load.supplierId,
-         cooperativeId: load.cooperativeId,
-         mineId: load.mineId,
-      });
-      this.onChangedWetKilograms();
       this.onChangedCooperative();
    }
 
+   public onChagedLoad() {
+      const load: Load = this.loads.find(l => l.id == this.formLiquidation.value.loadId);
+      this.getLotByLoadId();
+      if (!this.isEdit) {
+         this.metricWetKilograms = load.weight;
+         this.formLiquidation.patchValue({
+            admissionDate: new Date(load.date + ' '),
+            supplierId: load.supplierId,
+            cooperativeId: load.cooperativeId,
+            mineId: load.mineId,
+         });
+         this.onChangedWetKilograms();
+      }
+   }
+
+   public onChangedCooperative() {
+      const cooperative: Cooperative = this.cooperatives.find((c) => c.id == this.formLiquidation.value.cooperativeId);
+      if (!this.isEdit) {
+         this.formLiquidation.patchValue({
+            quotationSilver: 0,
+            quotationZinc: 0,
+            quotationLead: 0,
+            cajaNacional: cooperative?.cajaNacional || 0,
+            fedecomin: cooperative?.fedecomin || 0,
+            fencomin: cooperative?.fencomin || 0,
+            comibol: cooperative?.comibol || 0,
+            cooperativeContribution: cooperative?.cooperativeContribution || 0,
+            miningRoyalties: cooperative?.miningRoyalties || 0,
+         });
+         this.calculateDiscounts();
+      }
+   }
+
    private getLotByLoadId() {
-      this.lotService.findById(this.formLiquidation.value.loadId).subscribe({
-         next: (resp) => {
-            this.lot = resp;
-         },
-      });
+      if (this.formLiquidation.value.loadId) {
+         this.lotService.findById(this.formLiquidation.value.loadId).subscribe({
+            next: (resp) => {
+               this.lot = resp;
+            },
+         });
+      }
    }
 
    public onChangedWetKilograms() {
       this.formLiquidation.patchValue({
          metricWetTonnes: this.metricWetKilograms
             ? this.metricWetKilograms / 1000
-            : null,
+            : 0,
       });
       this.calculateSolidMetricWetTonnes();
    }
 
    public calculateSolidMetricWetTonnes() {
-      const percentHumidity: number =
-         this.formLiquidation.get('humidityPercentage')?.value / 100 || null;
-      const humidityInTonnes: number =
-         this.formLiquidation.get('metricWetTonnes')?.value *
-         (percentHumidity ?? 0);
-      this.solidMetricWetTonnes =
-         this.formLiquidation.get('metricWetTonnes').value - humidityInTonnes;
-
+      const metricWetTonnes = this.formLiquidation.get('metricWetTonnes')?.value || 0;
+      const percentHumidity: number = this.formLiquidation.get('humidityPercentage')?.value / 100 || 0;
+      const humidityInTonnes: number = metricWetTonnes * percentHumidity;
+      this.solidMetricTonnes = metricWetTonnes - humidityInTonnes;
       this.calculateTotalsPriceAndLaws();
    }
 
-   public onChangedCooperative() {
-      const cooperative: Cooperative = this.cooperatives.find(
-         (c) => c.id == this.formLiquidation.value.cooperativeId,
-      );
-      this.formLiquidation.patchValue({
-         quotationSilver: 3.6,
-         quotationZinc: 3.6,
-         quotationLead: 3.6,
-         cajaNacional: cooperative.cajaNacional,
-         fedecomin: cooperative.fedecomin,
-         fencomin: cooperative.fencomin,
-         comibol: cooperative.comibol,
-         cooperativeContribution: cooperative.cooperativeContribution,
-         miningRoyalties: cooperative.miningRoyalties,
-      });
+   public calculateTotalsPriceAndLaws() {
+      this.totalSilver = (this.formLiquidation.get('priceSilver').value || 0) * (this.formLiquidation.get('lawSilver').value || 0);
+      this.totalZinc = (this.formLiquidation.get('priceZinc').value || 0) * (this.formLiquidation.get('lawZinc').value || 0);
+      this.totalLead = (this.formLiquidation.get('priceLead').value || 0) * (this.formLiquidation.get('lawLead').value || 0);
+      this.totalMineralsUsd = this.totalSilver + this.totalZinc + this.totalLead;
+      this.totalMineralsBs = this.totalMineralsUsd * (this.formLiquidation.get('exchangeRate').value || 0);
+      this.totalImportBs = this.totalMineralsBs * this.solidMetricTonnes;
+      this.calculateDiscounts();
+   }
+
+   public calculateDiscounts() {
+      this.calculateRoyalties();
+      this.miningRoyaltiesDiscount = this.totalImportBs * ((this.formLiquidation.get('miningRoyalties').value || 0) / 100);
+      this.cajaNacionalDiscount = this.totalImportBs * ((this.formLiquidation.get('cajaNacional').value || 0) / 100);
+      this.fedecominDiscount = this.totalImportBs * ((this.formLiquidation.get('fedecomin').value || 0) / 100);
+      this.fencominDiscount = this.totalImportBs * ((this.formLiquidation.get('fencomin').value || 0) / 100);
+      this.comibolDiscount = this.totalImportBs * ((this.formLiquidation.get('comibol').value || 0) / 100);
+      this.cooperativeContributionDiscount = this.totalImportBs * ((this.formLiquidation.get('cooperativeContribution').value || 0) / 100);
+   }
+
+   private calculateRoyalties() {
+      this.calculateRoyaltySilver();
+      this.calculateRoyaltyZincAndLead(true);
+      this.calculateRoyaltyZincAndLead(false);
+   }
+
+   public calculateRoyaltySilver() {
+      const gramsSilver = this.solidMetricTonnes * (this.formLiquidation.get('lawSilver').value || 0) * 100;
+      const troyOuncesSilver = gramsSilver / 31.1035;
+      const grossValueSilver = troyOuncesSilver * (this.formLiquidation.get('quotationSilver').value || 0) * 6.96;
+      const royaltySilver = (grossValueSilver * 0.036).toFixed(2);
+      this.formLiquidation.patchValue({ royaltySilver: royaltySilver });
+      this.calculateTotals();
+   }
+
+   public calculateRoyaltyZincAndLead(isZinc: boolean) {
+      const lawValue: number = isZinc
+         ? this.formLiquidation.get('lawZinc').value || 0
+         : this.formLiquidation.get('lawLead').value || 0;
+      const quotationValue: number = isZinc
+         ? this.formLiquidation.get('quotationZinc').value || 0
+         : this.formLiquidation.get('quotationLead').value || 0;
+
+      const pounds =  this.solidMetricTonnes * 1000 * 2.2046223;
+      const finePounds = pounds * (lawValue / 100);
+      const grossValue = finePounds * quotationValue * 6.96
+      const royalty = (grossValue * 0.03).toFixed(2);
+      isZinc
+         ? this.formLiquidation.patchValue({ royaltyZinc: royalty })
+         : this.formLiquidation.patchValue({ royaltyLead: royalty });
+      this.calculateTotals();
+   }
+
+   public calculateTotals() {
+      this.totalDiscountsBs =
+         this.miningRoyaltiesDiscount +
+         parseFloat(this.formLiquidation.value.firstAdvance?? 0)  +
+         parseFloat(this.formLiquidation.value.secondAdvance?? 0)  +
+         parseFloat(this.formLiquidation.value.royaltySilver?? 0)  +
+         parseFloat(this.formLiquidation.value.royaltyZinc?? 0)  +
+         parseFloat(this.formLiquidation.value.royaltyLead?? 0)  +
+         this.cajaNacionalDiscount +
+         this.fedecominDiscount +
+         this.fencominDiscount +
+         this.comibolDiscount +
+         this.cooperativeContributionDiscount;
+      this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs;
+      this.liquidPayableUsd = this.liquidPayableBs / (this.formLiquidation.value.exchangeRate?? 1);
    }
 }

@@ -17,29 +17,24 @@ export class CrudService<T> {
     protected httpErrorHandlerService: HttpErrorHandlerService
   ) { }
 
-  public findAll(defaultErrorHandler: boolean = true) {
-    return this.request<T[]>(this.http.get<T[]>(this.url), defaultErrorHandler);
+  public findAll() {
+    return this.http.get<T[]>(this.url);
   }
   
-  public findById(id: number, defaultErrorHandler: boolean = true) {
-    return this.request<T>(this.http.get<T>(`${this.url}/${id}`), defaultErrorHandler);
+  public findById(id: number) {
+    return this.http.get<T>(`${this.url}/${id}`);
   }
   
-  public create(t: T, defaultErrorHandler: boolean = true) {
-    return this.request(this.http.post(this.url, t), defaultErrorHandler);
+  public create(t: T) {
+    return this.http.post(this.url, t);
   }
   
-  public update(id: number, t: T, defaultErrorHandler: boolean = true) {
-    return this.request(this.http.put(`${this.url}/${id}`, t), defaultErrorHandler);
+  public update(id: number, t: T) {
+    return this.http.put(`${this.url}/${id}`, t);
   }
   
-  public delete(id: number, defaultErrorHandler: boolean = true) {
-    return this.request<void>(this.http.delete<void>(`${this.url}/${id}`), defaultErrorHandler);
-  }
-  protected request<T>(observable: Observable<T>, defaultErrorHandler: boolean = true, toastLife?: number): Observable<T> {
-    return defaultErrorHandler
-      ? observable.pipe(catchError((error: HttpErrorResponse) => this.httpErrorHandlerService.handleAndThrow(error, toastLife)))
-      : observable;
+  public delete(id: number) {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 
   public getFilteredData() {

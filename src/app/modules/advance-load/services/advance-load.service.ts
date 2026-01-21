@@ -25,7 +25,7 @@ export class AdvanceLoadService extends CrudService<AdvanceLoad> implements ISer
   }
 
   public getAdvanceByLoad(loadId: number) {
-    return this.request(this.http.get<AdvanceLoad[]>(`${this.url}/load/${loadId}`));
+    return this.http.get<AdvanceLoad[]>(`${this.url}/load/${loadId}`);
   }
 
 }

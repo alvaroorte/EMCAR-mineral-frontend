@@ -9,6 +9,7 @@ import {
   EntityValidatorMultipleError,
   FormattedHttpError
 } from '../interfaces/http-error-handling.interface';
+import { LoginService } from './login.service';
 
 /**
  * Service to handle http errors.
@@ -18,7 +19,10 @@ import {
 })
 export class HttpErrorHandlerService {
 
-  constructor(private messageService: MessageService) { }
+  constructor(
+    private messageService: MessageService,
+    private loginService: LoginService
+  ) { }
   /**
    * Catches an HttpErrorResponse, formats it, displays it, and throws an error.
    * @param {HttpErrorResponse} httpErrorResponse Http error response.
@@ -28,13 +32,16 @@ export class HttpErrorHandlerService {
   public handleAndThrow(httpErrorResponse: HttpErrorResponse, toastLife: number = 3000) {
     const formattedError = this.httpErrorFormatter(httpErrorResponse);
     this.displayErrors(formattedError.errors, toastLife);
+    if (httpErrorResponse.status === HttpStatusCode.Forbidden || httpErrorResponse.status === HttpStatusCode.Unauthorized) {
+      this.loginService.logout();
+    }
     return throwError(() => formattedError);
   }
 
   public httpErrorFormatter(httpErrorResponse: HttpErrorResponse): FormattedHttpError {
     const apiErrorBase: APIErrorBase = httpErrorResponse.error;
     const errors: string[] = [];
-    if (httpErrorResponse.status === HttpStatusCode.InternalServerError || apiErrorBase.error) {
+    if (httpErrorResponse.status === HttpStatusCode.InternalServerError) {
       return {
         code: httpErrorResponse.status,
         status: httpErrorResponse.statusText,
