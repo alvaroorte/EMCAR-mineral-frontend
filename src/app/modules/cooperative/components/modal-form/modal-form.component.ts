@@ -48,6 +48,14 @@ export class ModalFormComponent {
     this.tittleForm = "Crear cooperativa";
     this.isEdit.set(false);
     this.openModal = true;
+    this.formCooperative.patchValue({
+      printCajaNacional: true,
+      printFedecomin: true,
+      printFencomin: true,
+      printComibol: true,
+      printCooperativeContribution: true,
+      printMiningRoyalties: true
+    })
   };
 
   private openEdit(id: number) {

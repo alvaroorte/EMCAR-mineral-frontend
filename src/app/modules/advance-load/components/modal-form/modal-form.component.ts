@@ -12,11 +12,10 @@ import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
 import {
    PaymentChanelDropdownOptions,
    PaymentChanelEnum,
-   //  PaymentTypeDropdownOptions,
-   PaymentTypeEnum,
-   ReceiptTypeDropdownOptions,
-   ReceiptTypeEnum,
+   PaymentTypeEnum
 } from '@core/enums/advance-load.enum';
+import { LotService } from 'src/app/modules/lot/services/lot.service';
+import { LOT_ASSIGNMENT_KEY } from '@core/enums/lot.enum';
 
 @Component({
    selector: 'app-modal-form',
@@ -28,18 +27,17 @@ export class ModalFormComponent {
 
    private helpersService = inject(HelpersService);
    private advanceLoadService = inject(AdvanceLoadService);
+   private lotService = inject(LotService);
 
    public readonly labels = LABELS;
    public readonly messages = MESSAGES;
    public readonly buttons = LABEL_BUTTONS;
-   public readonly receiptTypes = ReceiptTypeDropdownOptions;
    public readonly paymentTypes = PaymentTypeEnum;
    public readonly paymentChannels = PaymentChanelDropdownOptions;
    public selectedAdvanceLoad: AdvanceLoad;
    public openModal: boolean = false;
    public tittleForm: string = '';
-   public formAdvanceLoad: FormGroup =
-      FormUtils.getDefaultAdvanceLoadFormGroup();
+   public formAdvanceLoad: FormGroup = FormUtils.getDefaultAdvanceLoadFormGroup();
    private tableComponent: GenericTableComponent<AdvanceLoad>;
    private isEdit = signal<boolean>(false);
 
@@ -55,9 +53,9 @@ export class ModalFormComponent {
 
    private openCreate() {
       this.reset();
+      this.getCorrelativeLot();
       this.formAdvanceLoad.patchValue({
          loadId: this.loadId,
-         receiptType: ReceiptTypeEnum.SISTEMA,
          date: new Date(),
          paymentType: PaymentTypeEnum.CASH,
          paymentChanel: PaymentChanelEnum.CASHIER,
@@ -137,6 +135,16 @@ export class ModalFormComponent {
       this.advanceLoadService
          .getSelectedRow()
          .subscribe((AdvanceLoad) => (this.selectedAdvanceLoad = AdvanceLoad));
+   }
+
+   private getCorrelativeLot() {
+      this.lotService.getSearch(true, LOT_ASSIGNMENT_KEY.RECEIPT).subscribe({
+         next: (resp) => {
+            this.formAdvanceLoad.patchValue({
+               receiptCode: resp[0].correlative
+            })
+         }
+      })
    }
 
    public onchangedPaymentType() {

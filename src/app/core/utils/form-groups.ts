@@ -2,7 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { noSpaceValidator } from '../validators/noSpaceValidator';
 import { regex } from '@core/constants/regexs';
 import { LIMITS } from '@core/constants/limits';
-import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
+import { LOT_ASSIGNMENT_KEY } from '@core/enums/lot.enum';
 
 export class FormUtils {
    static getDefaultCompanyFormGroup(): FormGroup {
@@ -72,7 +72,7 @@ export class FormUtils {
             noSpaceValidator,
          ]),
          initialDocNumber: new FormControl<string>('', [Validators.required]),
-         assignment: new FormControl<LOT_ASSIGNMENT>(LOT_ASSIGNMENT.RECEPTION, [
+         assignment: new FormControl<LOT_ASSIGNMENT_KEY>(LOT_ASSIGNMENT_KEY.RECEPTION, [
             Validators.required,
          ]),
          state: new FormControl<boolean>(true, [Validators.required]),
@@ -87,10 +87,7 @@ export class FormUtils {
             Validators.minLength(LIMITS.minLength),
             noSpaceValidator,
          ]),
-         description: new FormControl<string>('', [
-            Validators.required,
-            noSpaceValidator,
-         ]),
+         description: new FormControl<string>('', [noSpaceValidator]),
       });
    }
 
@@ -103,7 +100,6 @@ export class FormUtils {
             noSpaceValidator,
          ]),
          surname: new FormControl<string>('', [
-            Validators.required,
             Validators.pattern(regex.fieldName),
             Validators.minLength(LIMITS.minLength),
             noSpaceValidator,
@@ -118,7 +114,6 @@ export class FormUtils {
             Validators.minLength(LIMITS.minLength),
             noSpaceValidator,
          ]),
-         supplierGroup: new FormControl<string>(''),
          expeditionPlace: new FormControl<string>(''),
       });
    }
@@ -185,7 +180,7 @@ export class FormUtils {
          mineralId: new FormControl<number>(null, [Validators.required]),
          typeMineralId: new FormControl<number>(null, [Validators.required]),
          weight: new FormControl<number>(null, [Validators.required]),
-         numberSacks: new FormControl<number>(null, [Validators.required]),
+         numberSacks: new FormControl<number>(null),
          mineId: new FormControl<number>(null),
          cooperativeId: new FormControl<number>(null),
          observation: new FormControl<string>(''),
@@ -195,7 +190,6 @@ export class FormUtils {
    static getDefaultAdvanceLoadFormGroup(): FormGroup {
       return new FormGroup({
          loadId: new FormControl<number>(null, [Validators.required]),
-         receiptType: new FormControl<string>(null, [Validators.required]),
          receiptCode: new FormControl<number>(null, [Validators.required]),
          date: new FormControl<string>('', [Validators.required]),
          amount: new FormControl<number>(null, [Validators.required]),
@@ -212,6 +206,8 @@ export class FormUtils {
          liquidationType: new FormControl<string>('', [Validators.required]),
          loadId: new FormControl<number>(null, [Validators.required]),
          supplierId: new FormControl<number>(null, [Validators.required]),
+         mineralId: new FormControl<number>(null, [Validators.required]),
+         typeMineralId: new FormControl<number>(null, [Validators.required]),
          cooperativeId: new FormControl<number>(null, [Validators.required]),
          mineId: new FormControl<number>(null, [Validators.required]),
          admissionDate: new FormControl<string>('', [Validators.required]),

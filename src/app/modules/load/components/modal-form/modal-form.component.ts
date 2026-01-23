@@ -21,6 +21,7 @@ import { Mine } from '@core/interfaces/mine.interface';
 import { CooperativeService } from 'src/app/modules/cooperative/services/cooperative.service';
 import { Cooperative } from '@core/interfaces/cooperative.interface';
 import { TypeMineral } from '@core/interfaces/type-mineral.interface';
+import { LOT_ASSIGNMENT_KEY } from '@core/enums/lot.enum';
 
 @Component({
    selector: 'app-modal-form',
@@ -57,6 +58,7 @@ export class ModalFormComponent {
       this.registerTableComponentListener();
       this.waitForDataSelection();
       this.loadService.eventFormComponent.emit(this);
+      this.loadDataDropdowns();
    }
 
    public hideModal() {
@@ -66,7 +68,6 @@ export class ModalFormComponent {
    private openCreate() {
       this.reset();
       this.formLoad.patchValue({ date: new Date() });
-      this.loadDataDropdowns();
       this.tittleForm = 'Crear carga';
       this.isEdit.set(false);
       this.openModal = true;
@@ -102,7 +103,7 @@ export class ModalFormComponent {
    }
 
    private getLots() {
-      this.lotService.getSearch(true).subscribe({
+      this.lotService.getSearch(true, LOT_ASSIGNMENT_KEY.RECEPTION).subscribe({
          next: (res) => {
             this.lots = res;
          },
@@ -148,6 +149,13 @@ export class ModalFormComponent {
                correlativeLotCode: res.correlative,
             });
          },
+      });
+   }
+
+   public onChangeLot() {
+      const lot = this.lots.find(l => l.id == this.formLoad.value.lotId);
+      this.formLoad.patchValue({
+         correlativeLotCode: lot.correlative,
       });
    }
 

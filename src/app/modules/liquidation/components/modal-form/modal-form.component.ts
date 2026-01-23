@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { HelpersService } from '@core/services/helpers.service';
 import { MESSAGES } from '@core/constants/messages';
 import { LABEL_BUTTONS, LABELS } from '@core/constants/labels';
@@ -18,10 +18,12 @@ import { Mine } from '@core/interfaces/mine.interface';
 import { Cooperative } from '@core/interfaces/cooperative.interface';
 import { LIQUIDATION_TYPE_ENUM } from '@core/enums/liquidation-type';
 import { LIMITS } from '@core/constants/limits';
-import { LotService } from 'src/app/modules/lot/services/lot.service';
-import { Lot } from '@core/interfaces/lot.interface';
 import { SupplierSelect } from '@core/interfaces/supplier.interface';
 import { transformDateBackToDateFront } from '@core/utils/dateFormats';
+import { MineralService } from 'src/app/modules/mineral/services/mineral.service';
+import { TypeMineralService } from 'src/app/modules/type-mineral/services/type-mineral.service';
+import { Mineral } from '@core/interfaces/mineral.interface';
+import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 
 @Component({
    selector: 'app-modal-form',
@@ -31,10 +33,11 @@ import { transformDateBackToDateFront } from '@core/utils/dateFormats';
 export class ModalFormComponent {
    private liquidationService = inject(LiquidationService);
    private loadService = inject(LoadService);
-   private lotService = inject(LotService);
    private supplierService = inject(SupplierService);
    private mineService = inject(MineService);
    private cooperativeService = inject(CooperativeService);
+   private mineralService = inject(MineralService);
+   private typeMineralService = inject(TypeMineralService);
    private helpersService = inject(HelpersService);
 
    public readonly labels = LABELS;
@@ -46,7 +49,9 @@ export class ModalFormComponent {
    public suppliers: SupplierSelect[] = [];
    public mines: Mine[] = [];
    public cooperatives: Cooperative[] = [];
-   public lot: Lot;
+   public minerals: Mineral[] = [];
+   public typeMineral: TypeMineral[] = [];
+   public correlativeLotCode = signal<string>('');
    public selectedLiquidation: Liquidation;
    public openModal: boolean = false;
    public tittleForm: string = '';
@@ -109,6 +114,8 @@ export class ModalFormComponent {
       this.getSuppliers();
       this.getMines();
       this.getCooperatives();
+      this.getMinerals();
+      this.getTypeMinerals();
    }
 
    private getLoads() {
@@ -139,6 +146,22 @@ export class ModalFormComponent {
       this.cooperativeService.findAll().subscribe({
          next: (res) => {
             this.cooperatives = res;
+         },
+      });
+   }
+   
+   private getMinerals() {
+      this.mineralService.findAll().subscribe({
+         next: (res) => {
+            this.minerals = res;
+         },
+      });
+   }
+   
+   private getTypeMinerals() {
+      this.typeMineralService.findAll().subscribe({
+         next: (res) => {
+            this.typeMineral = res;
          },
       });
    }
@@ -209,37 +232,27 @@ export class ModalFormComponent {
          .subscribe((Liquidation) => (this.selectedLiquidation = Liquidation));
    }
 
-   public onChagedLiquidationType() {
-      if (this.formLiquidation.value.liquidationType == this.liquidationTypes.COOPERATIVE) {
-         this.formLiquidation.get('cooperativeId').addValidators(Validators.required);
-         this.formLiquidation.get('mineId').addValidators(Validators.required);
-      } else {
-         this.formLiquidation.get('cooperativeId').removeValidators(Validators.required);
-         this.formLiquidation.get('mineId').removeValidators(Validators.required);
-      }
-      this.formLiquidation.get('cooperativeId').reset();
-      this.formLiquidation.get('mineId').reset();
-      this.onChangedCooperative();
-   }
-
    public onChagedLoad() {
       const load: Load = this.loads.find(l => l.id == this.formLiquidation.value.loadId);
-      this.getLotByLoadId();
-      if (!this.isEdit) {
+      this.correlativeLotCode.set(load.correlativeLotCode);
+      if (!this.isEdit()) {
          this.metricWetKilograms = load.weight;
          this.formLiquidation.patchValue({
             admissionDate: new Date(load.date + ' '),
             supplierId: load.supplierId,
             cooperativeId: load.cooperativeId,
+            mineralId: load.mineralId,
+            typeMineralId: load.typeMineralId,
             mineId: load.mineId,
          });
          this.onChangedWetKilograms();
+         this.onChangedCooperative();
       }
    }
 
    public onChangedCooperative() {
       const cooperative: Cooperative = this.cooperatives.find((c) => c.id == this.formLiquidation.value.cooperativeId);
-      if (!this.isEdit) {
+      if (!this.isEdit()) {
          this.formLiquidation.patchValue({
             quotationSilver: 0,
             quotationZinc: 0,
@@ -252,16 +265,6 @@ export class ModalFormComponent {
             miningRoyalties: cooperative?.miningRoyalties || 0,
          });
          this.calculateDiscounts();
-      }
-   }
-
-   private getLotByLoadId() {
-      if (this.formLiquidation.value.loadId) {
-         this.lotService.findById(this.formLiquidation.value.loadId).subscribe({
-            next: (resp) => {
-               this.lot = resp;
-            },
-         });
       }
    }
 

@@ -6,7 +6,6 @@ export interface Supplier extends DataBase {
     surname: string;
     documentNumber: string;
     address: string;
-    supplierGroup: string;
     expeditionPlace: string;
 }
 

@@ -12,26 +12,15 @@ import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 @Injectable({
    providedIn: 'root',
 })
-export class TypeMineralService
-   extends CrudService<TypeMineral>
-   implements IServiceCommon
-{
-   @Output() eventFormComponent: EventEmitter<ModalFormComponent> =
-      new EventEmitter();
-   @Output() eventTableComponent: EventEmitter<
-      GenericTableComponent<TypeMineral>
-   > = new EventEmitter();
-   @Output() eventModalDeleteComponent: EventEmitter<ModaldeleteComponent> =
-      new EventEmitter();
+export class TypeMineralService extends CrudService<TypeMineral> implements IServiceCommon {
+   @Output() eventFormComponent: EventEmitter<ModalFormComponent> = new EventEmitter();
+   @Output() eventTableComponent: EventEmitter<GenericTableComponent<TypeMineral>> = new EventEmitter();
+   @Output() eventModalDeleteComponent: EventEmitter<ModaldeleteComponent> =new EventEmitter();
 
    constructor(
       protected override http: HttpClient,
       protected override httpErrorHandlerService: HttpErrorHandlerService,
    ) {
-      super(
-         http,
-         `${environment.server_url}/typeMinerals`,
-         httpErrorHandlerService,
-      );
+      super( http, `${environment.server_url}/typeMinerals`, httpErrorHandlerService);
    }
 }

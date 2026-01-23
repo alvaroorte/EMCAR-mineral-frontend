@@ -9,7 +9,7 @@ import { FormUtils } from '@core/utils/form-groups';
 import { SEVERITY_ENUM } from '@core/enums/severity.enum';
 import { LotService } from '../../services/lot.service';
 import { Lot } from '@core/interfaces/lot.interface';
-import { LOT_ASSIGNMENT } from '@core/enums/lot.enum';
+import { LOT_ASSIGNMENT_VALUE } from '@core/enums/lot.enum';
 
 @Component({
    selector: 'app-modal-form',
@@ -23,6 +23,7 @@ export class ModalFormComponent {
    public readonly labels = LABELS;
    public readonly messages = MESSAGES;
    public readonly buttons = LABEL_BUTTONS;
+   public readonly lotAssigments = LOT_ASSIGNMENT_VALUE;
    public selectedLot: Lot;
    public openModal: boolean = false;
    public tittleForm: string = '';
@@ -43,7 +44,6 @@ export class ModalFormComponent {
    private openCreate() {
       this.reset();
       this.formLot.patchValue({
-         assignment: LOT_ASSIGNMENT.RECEPTION,
          state: true,
       });
       this.tittleForm = 'Crear lote';

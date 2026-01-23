@@ -12,8 +12,7 @@
               <p-float-label>
                 <p-select inputId="liquidationType" formControlName="liquidationType"
                   [options]="liquidationTypes | keyvalue" optionLabel="value" optionValue="value" [filter]="true"
-                  filterBy="value" styleClass="w-full" appendTo="body"
-                  (onChange)="onChagedLiquidationType()"></p-select>
+                  filterBy="value" styleClass="w-full" appendTo="body"></p-select>
                 <label for="liquidationType" class="text-lg font-bold text-800 required-field"> {{
                   labels.liquidationType }} </label>
               </p-float-label>
@@ -45,17 +44,17 @@
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-6 col-3">
+            <div class="form-group field mt-6 col-2">
               <p-float-label>
                 <div
-                  [ngClass]="['p-2 non-editable-field flex align-items-center', lot?.prefix? 'p-inputwrapper-filled': '']">
-                  {{ lot?.prefix || '' }}
+                  [ngClass]="['p-2 non-editable-field flex align-items-center', correlativeLotCode()? 'p-inputwrapper-filled': '']">
+                  {{ correlativeLotCode() }}
                 </div>
                 <label class="text-lg font-bold text-800 required-field"> {{ labels.lot }} </label>
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-6 col-3">
+            <div class="form-group field mt-6 col-2">
               <p-float-label>
                 <p-datepicker id="admissionDate" styleClass="w-full" [showIcon]="true" dateFormat="dd/mm/yy"
                   appendTo="body" formControlName="admissionDate">
@@ -65,7 +64,7 @@
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-4 col-3">
+            <div class="form-group field mt-6 col-2">
               <p-float-label>
                 <p-datepicker id="liquidationDate" styleClass="w-full" [showIcon]="true" dateFormat="dd/mm/yy"
                   appendTo="body" formControlName="liquidationDate">
@@ -86,6 +85,25 @@
 
             <div class="form-group field mt-4 col-3">
               <p-float-label>
+                <p-select inputId="mineralId" formControlName="mineralId" [options]="minerals" optionLabel="name"
+                  optionValue="id" [filter]="true" filterBy="fullName" styleClass="w-full" appendTo="body"></p-select>
+                <label for="mineralId" class="text-lg font-bold text-800 required-field"> {{ labels.mineral }}
+                </label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group field mt-4 col-2">
+              <p-float-label>
+                <p-select inputId="typeMineralId" formControlName="typeMineralId" [options]="minerals"
+                  optionLabel="name" optionValue="id" [filter]="true" filterBy="fullName" styleClass="w-full"
+                  appendTo="body"></p-select>
+                <label for="typeMineralId" class="text-lg font-bold text-800 required-field"> {{ labels.typeMineral }}
+                </label>
+              </p-float-label>
+            </div>
+
+            <div class="form-group field mt-4 col-2">
+              <p-float-label>
                 <p-select inputId="cooperativeId" formControlName="cooperativeId" [options]="cooperatives"
                   optionLabel="name" optionValue="id"
                   [showClear]="formLiquidation.value.liquidationType == liquidationTypes.PARTICULAR" [filter]="true"
@@ -96,7 +114,7 @@
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-4 col-3">
+            <div class="form-group field mt-4 col-2">
               <p-float-label>
                 <p-select inputId="mineId" formControlName="mineId" [options]="mines" optionLabel="name"
                   optionValue="id" [showClear]="formLiquidation.value.liquidationType == liquidationTypes.PARTICULAR"
@@ -129,7 +147,7 @@
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-3 col-3">
+            <div class="form-group field mt-3 col-2">
               <p-float-label>
                 <p-inputNumber id="humidityPercentage" mode="decimal" locale="en-US" [minFractionDigits]="2"
                   [maxFractionDigits]="2" [useGrouping]="false" [min]="0" formControlName="humidityPercentage"
@@ -139,7 +157,7 @@
               </p-float-label>
             </div>
 
-            <div class="form-group field mt-3 col-1">
+            <div class="form-group field mt-3 col-2">
               <p-float-label>
                 <div
                   [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">
@@ -148,7 +166,7 @@
                 <label class="text-lg font-bold text-800 required-field"> {{ labels.solidMetricKilograms }} </label>
               </p-float-label>
             </div>
-            <div class="form-group field mt-3 col-1">
+            <div class="form-group field mt-3 col-2">
               <p-float-label>
                 <div
                   [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">

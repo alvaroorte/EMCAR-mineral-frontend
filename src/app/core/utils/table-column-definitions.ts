@@ -31,19 +31,13 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'address',
-            header: LABELS.address,
-            columnType: TableColumnType.TEXT,
-         },
-         {
-            field: 'purpose',
-            header: LABELS.purpose,
-            columnType: TableColumnType.TEXT,
-            initiallyHidden: true,
-         },
-         {
             field: 'nim',
             header: LABELS.nim,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'address',
+            header: LABELS.address,
             columnType: TableColumnType.TEXT,
          },
          {
@@ -132,6 +126,11 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.NUMERIC,
          },
          {
+            field: 'currentDocNumber',
+            header: LABELS.currentNumber,
+            columnType: TableColumnType.NUMERIC,
+         },
+         {
             field: 'state',
             header: LABELS.status,
             columnType: TableColumnType.STATUS,
@@ -190,13 +189,7 @@ export class TableColumnDefinitions {
             field: 'address',
             header: LABELS.address,
             columnType: TableColumnType.TEXT,
-         },
-         {
-            field: 'supplierGroup',
-            header: LABELS.supplierGroup,
-            columnType: TableColumnType.TEXT,
-            initiallyHidden: true,
-         },
+         }
       ];
    }
 
@@ -215,6 +208,11 @@ export class TableColumnDefinitions {
          {
             field: 'lotDescription',
             header: LABELS.lot,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'correlativeLotCode',
+            header: LABELS.internalLot,
             columnType: TableColumnType.TEXT,
          },
          {
@@ -263,16 +261,16 @@ export class TableColumnDefinitions {
             header: LABELS.updatedBy,
             columnType: TableColumnType.TEXT,
          },
+         {
+            field: 'state',
+            header: LABELS.status,
+            columnType: TableColumnType.TEXT,
+         },
       ];
    }
 
    static getDefaultAdvanceLoadColumnsDefinitions(): TableColumn<AdvanceLoad>[] {
       return [
-         {
-            field: 'receiptType',
-            header: LABELS.receiptType,
-            columnType: TableColumnType.TEXT,
-         },
          {
             field: 'receiptCode',
             header: LABELS.receiptCode,

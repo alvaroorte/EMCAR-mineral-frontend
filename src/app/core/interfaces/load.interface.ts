@@ -20,6 +20,7 @@ export interface Load extends DataBase {
    typeMineralName: string;
    mineName: string;
    cooperativeName: string;
+   state: string;
 }
 
 export interface CorrelativeLot {

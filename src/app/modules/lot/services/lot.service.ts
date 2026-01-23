@@ -8,6 +8,7 @@ import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-dele
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
 import { Lot } from '@core/interfaces/lot.interface';
+import { LOT_ASSIGNMENT_KEY } from '@core/enums/lot.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,10 @@ export class LotService extends CrudService<Lot> implements IServiceCommon {
     super(http, `${environment.server_url}/lots`, httpErrorHandlerService);
   }
 
-  public getSearch(state: boolean) {
-    const params = new HttpParams().set('state', state);
+  public getSearch(state: boolean, assignment: LOT_ASSIGNMENT_KEY) {
+    const params = new HttpParams()
+      .set('state', state)
+      .set('assignment', assignment);
     return this.http.get<Lot[]>(`${this.url}/search`, { params });
   }
 

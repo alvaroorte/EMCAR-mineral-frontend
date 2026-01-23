@@ -45,9 +45,6 @@ export class ModalFormComponent {
     this.reset();
     this.tittleForm = "Crear proveedor";
     this.isEdit.set(false);
-    this.formSupplier.patchValue({
-      supplierGroup: 'Cliente'
-    })
     this.openModal = true;
   };
 
