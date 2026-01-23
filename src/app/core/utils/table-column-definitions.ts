@@ -111,6 +111,11 @@ export class TableColumnDefinitions {
    static getDefaultLotColumnsDefinitions(): TableColumn<Lot>[] {
       return [
          {
+            field: 'assignment',
+            header: LABELS.lotType,
+            columnType: TableColumnType.TEXT,
+         },
+         {
             field: 'description',
             header: LABELS.description,
             columnType: TableColumnType.TEXT,
