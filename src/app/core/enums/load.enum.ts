@@ -1,0 +1,4 @@
+export enum LOAD_STATUS_KEY {
+    PENDING = "PENDING",
+    LIQUIDATED = "LIQUIDATED",
+}

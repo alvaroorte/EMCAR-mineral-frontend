@@ -24,6 +24,7 @@ import { MineralService } from 'src/app/modules/mineral/services/mineral.service
 import { TypeMineralService } from 'src/app/modules/type-mineral/services/type-mineral.service';
 import { Mineral } from '@core/interfaces/mineral.interface';
 import { TypeMineral } from '@core/interfaces/type-mineral.interface';
+import { LOAD_STATUS_KEY } from '@core/enums/load.enum';
 
 @Component({
    selector: 'app-modal-form',
@@ -119,7 +120,7 @@ export class ModalFormComponent {
    }
 
    private getLoads() {
-      this.loadService.findAll().subscribe({
+      this.loadService.getSearch(LOAD_STATUS_KEY.PENDING).subscribe({
          next: (res) => {
             this.loads = res;
          },

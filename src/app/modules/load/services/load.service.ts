@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Output, EventEmitter  } from '@angular/core';
 import { environment } from '@core/environments/environment.development';
 import { IServiceCommon } from '@core/interfaces/service-common.interface';
@@ -8,6 +8,7 @@ import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-dele
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
 import { CorrelativeLot, Load } from '@core/interfaces/load.interface';
+import { LOAD_STATUS_KEY } from '@core/enums/load.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,11 @@ export class LoadService extends CrudService<Load> implements IServiceCommon {
 
   public getCorrelativeLot(lotId: number) {
     return this.http.get<CorrelativeLot>(`${this.url}/correlative/preview/${lotId}`);
+  }
+  
+  public getSearch(state: LOAD_STATUS_KEY) {
+    const params: HttpParams = new HttpParams().set('state', state);
+    return this.http.get<Load[]>(`${this.url}/search`, {params});
   }
 
 }
