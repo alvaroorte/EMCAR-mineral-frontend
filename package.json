@@ -1,5 +1,5 @@
 {
-  "name": "emcar",
+  "name": "comcar",
   "version": "2.2.1",
   "scripts": {
     "ng": "ng",

@@ -28,6 +28,32 @@ export class FormUtils {
       });
    }
 
+   static getDefaultUserFormGroup(): FormGroup {
+      return new FormGroup({
+         name: new FormControl<string>('', [
+            Validators.required,
+            Validators.pattern(regex.fieldName),
+            Validators.minLength(LIMITS.minLengthCode),
+            noSpaceValidator,
+         ]),
+         surname: new FormControl<string>('', [
+            Validators.required,
+            Validators.pattern(regex.fieldName),
+            Validators.minLength(LIMITS.minLengthCode),
+            noSpaceValidator,
+         ]),
+         username: new FormControl<string>('', [
+            Validators.required,
+            Validators.pattern(regex.fieldName),
+            Validators.minLength(LIMITS.minLengthCode),
+            noSpaceValidator,
+         ]),
+         password: new FormControl<string>('', [ Validators.required, Validators.minLength(LIMITS.minLengthPassword), noSpaceValidator]),
+         role: new FormControl<string>('', [ Validators.required]),
+         state: new FormControl<string>('', [ Validators.required])
+      });
+   }
+
    static getDefaultMineralFormGroup(): FormGroup {
       return new FormGroup({
          name: new FormControl<string>('', [
@@ -222,7 +248,7 @@ export class FormUtils {
          humidityPercentage: new FormControl<number>(null, [
             Validators.required,
          ]),
-         metricWetTonnes: new FormControl<number>(null, [Validators.required]),
+         metricWetKilograms: new FormControl<number>(null, [Validators.required]),
          miningRoyalties: new FormControl<number>(null),
          quotationSilver: new FormControl<number>(null),
          quotationZinc: new FormControl<number>(null),

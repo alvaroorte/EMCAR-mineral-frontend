@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
             preset: Lara,
             options: {
               prefix: 'p',
-              darkModeSelector: '.emcar-mode-dark',
+              darkModeSelector: '.comcar-mode-dark',
               cssLayer: false
             }
         },

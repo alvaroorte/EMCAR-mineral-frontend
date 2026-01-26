@@ -94,7 +94,7 @@
 
             <div class="form-group field mt-4 col-2">
               <p-float-label>
-                <p-select inputId="typeMineralId" formControlName="typeMineralId" [options]="minerals"
+                <p-select inputId="typeMineralId" formControlName="typeMineralId" [options]="typeMineral"
                   optionLabel="name" optionValue="id" [filter]="true" filterBy="fullName" styleClass="w-full"
                   appendTo="body"></p-select>
                 <label for="typeMineralId" class="text-lg font-bold text-800 required-field"> {{ labels.typeMineral }}
@@ -140,8 +140,8 @@
             <div class="form-group field mt-3 col-3">
               <p-float-label>
                 <p-inputNumber id="metricWetKilograms" mode="decimal" locale="en-US" [minFractionDigits]="2"
-                  [maxFractionDigits]="2" [useGrouping]="false" [min]="0" [(ngModel)]="metricWetKilograms"
-                  [ngModelOptions]="{standalone: true}" styleClass="w-full" (onInput)="onChangedWetKilograms()" />
+                  [maxFractionDigits]="2" [useGrouping]="false" [min]="0" formControlName="metricWetKilograms"
+                  styleClass="w-full" (onInput)="onChangedWetKilograms()" />
                 <label htmlFor="metricWetKilograms" class="text-lg font-bold text-800 required-field"> {{
                   labels.metricWetKilograms }} </label>
               </p-float-label>
@@ -160,7 +160,7 @@
             <div class="form-group field mt-3 col-2">
               <p-float-label>
                 <div
-                  [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">
+                  [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetKilograms? 'p-inputwrapper-filled': '']">
                   {{ solidMetricTonnes * 1000 | formatFieldAmount }}
                 </div>
                 <label class="text-lg font-bold text-800 required-field"> {{ labels.solidMetricKilograms }} </label>
@@ -169,7 +169,7 @@
             <div class="form-group field mt-3 col-2">
               <p-float-label>
                 <div
-                  [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetTonnes? 'p-inputwrapper-filled': '']">
+                  [ngClass]="['p-2 non-editable-field flex align-items-center justify-content-end', formLiquidation.value.metricWetKilograms? 'p-inputwrapper-filled': '']">
                   {{ solidMetricTonnes | formatFieldAmount }}
                 </div>
                 <label class="text-lg font-bold text-800 required-field"> {{ labels.solidMetricTonnes }} </label>
@@ -298,7 +298,7 @@
                         (onInput)="calculateRoyaltySilver()" />
                     </td>
                     <td class="text-right">
-                      <h4>{{ formLiquidation.value.royaltySilver | formatFieldAmount }}</h4>
+                      <h4>{{ formLiquidation.value.royaltySilver?? 0 | formatFieldAmount }}</h4>
                     </td>
                   </tr>
                   <tr>
@@ -312,7 +312,7 @@
                         (onInput)="calculateRoyaltyZincAndLead(true)" />
                     </td>
                     <td class="text-right">
-                      <h4>{{ formLiquidation.value.royaltyZinc | formatFieldAmount }}</h4>
+                      <h4>{{ formLiquidation.value.royaltyZinc?? 0 | formatFieldAmount }}</h4>
                     </td>
                   </tr>
                   <tr>
@@ -326,7 +326,7 @@
                         (onInput)="calculateRoyaltyZincAndLead(false)" />
                     </td>
                     <td class="text-right">
-                      <h4>{{ formLiquidation.value.royaltyLead | formatFieldAmount }}</h4>
+                      <h4>{{ formLiquidation.value.royaltyLead?? 0 | formatFieldAmount }}</h4>
                     </td>
                   </tr>
                   <tr>
@@ -401,13 +401,11 @@
                   </tr>
                   <tr>
                     <td class="text-center">
-                      <h4>{{ labels.firstAdvance }}</h4>
+                      <h4 class="my-2">{{ labels.firstAdvance }}</h4>
                     </td>
                     <td class="text-center">-</td>
-                    <td>
-                      <p-inputNumber id="firstAdvance" mode="decimal" locale="en-US" [minFractionDigits]="2"
-                        [maxFractionDigits]="2" [useGrouping]="false" [min]="0" formControlName="firstAdvance"
-                        styleClass="w-full" (onInput)="calculateTotals()" />
+                    <td class="text-right">
+                      <h4 class="my-2">{{ formLiquidation.value.firstAdvance?? 0 | formatFieldAmount }}</h4>
                     </td>
                   </tr>
                   <tr>

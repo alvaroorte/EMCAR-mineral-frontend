@@ -11,6 +11,7 @@ import { Cooperative } from '@core/interfaces/cooperative.interface';
 import { Load } from '@core/interfaces/load.interface';
 import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
 import { Liquidation } from '@core/interfaces/liquidation.interface';
+import { User } from '@core/interfaces/user.interface';
 
 export class TableColumnDefinitions {
    static getDefaultCompanyColumnsDefinitions(): TableColumn<Company>[] {
@@ -385,6 +386,36 @@ export class TableColumnDefinitions {
          {
             field: 'createdBy',
             header: LABELS.createdBy,
+            columnType: TableColumnType.TEXT,
+         },
+      ];
+   }
+
+   static getDefaultUserColumnsDefinitions(): TableColumn<User>[] {
+      return [
+         {
+            field: 'name',
+            header: LABELS.name,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'surname',
+            header: LABELS.surname,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'email',
+            header: LABELS.email,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'role',
+            header: LABELS.role,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'state',
+            header: LABELS.status,
             columnType: TableColumnType.TEXT,
          },
       ];

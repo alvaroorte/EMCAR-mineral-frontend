@@ -13,3 +13,8 @@ export interface AdvanceLoad extends DataBase {
     paymentChanel: string,
     loadId: number
 }
+
+export interface TotalAdvance {
+    loadId: number,
+    totalAmount: number
+}

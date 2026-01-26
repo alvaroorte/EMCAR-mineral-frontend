@@ -7,7 +7,7 @@ import { GenericTableComponent } from '@shared/components/generic-table/generic-
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
-import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
+import { AdvanceLoad, TotalAdvance } from '@core/interfaces/advance-load.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,10 @@ export class AdvanceLoadService extends CrudService<AdvanceLoad> implements ISer
 
   public getAdvanceByLoad(loadId: number) {
     return this.http.get<AdvanceLoad[]>(`${this.url}/load/${loadId}`);
+  }
+  
+  public getTotalAdvance(loadId: number) {
+    return this.http.get<TotalAdvance>(`${this.url}/total/${loadId}`);
   }
 
 }

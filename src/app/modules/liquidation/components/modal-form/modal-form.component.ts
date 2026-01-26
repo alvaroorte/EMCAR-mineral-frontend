@@ -25,6 +25,7 @@ import { TypeMineralService } from 'src/app/modules/type-mineral/services/type-m
 import { Mineral } from '@core/interfaces/mineral.interface';
 import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 import { LOAD_STATUS_KEY } from '@core/enums/load.enum';
+import { AdvanceLoadService } from 'src/app/modules/advance-load/services/advance-load.service';
 
 @Component({
    selector: 'app-modal-form',
@@ -39,6 +40,7 @@ export class ModalFormComponent {
    private cooperativeService = inject(CooperativeService);
    private mineralService = inject(MineralService);
    private typeMineralService = inject(TypeMineralService);
+   private advanceLoadService = inject(AdvanceLoadService);
    private helpersService = inject(HelpersService);
 
    public readonly labels = LABELS;
@@ -56,7 +58,6 @@ export class ModalFormComponent {
    public selectedLiquidation: Liquidation;
    public openModal: boolean = false;
    public tittleForm: string = '';
-   public metricWetKilograms: number = 0;
    public totalSilver: number = 0;
    public totalZinc: number = 0;
    public totalLead: number = 0;
@@ -90,6 +91,7 @@ export class ModalFormComponent {
 
    private openCreate() {
       this.reset();
+      this.getLoads();
       this.formLiquidation.patchValue({
          liquidationDate: new Date(),
       });
@@ -104,14 +106,29 @@ export class ModalFormComponent {
       this.liquidationService.findById(id).subscribe({
          next: (res) => {
             this.isEdit.set(true);
-            this.openModal = true;
             this.updateFormValues(res);
+            this.getLoads();
+            this.openModal = true;
+            setTimeout(() => {
+               console.log(this.formLiquidation.value);
+               
+            }, 5000);
+            
+         },
+      });
+   }
+
+   public getTotalAdvance() {
+      this.advanceLoadService.getTotalAdvance(this.formLiquidation.value.loadId).subscribe({
+         next: (res) => {
+            this.formLiquidation.patchValue({
+               firstAdvance: res.totalAmount
+            })
          },
       });
    }
 
    private loadData() {
-      this.getLoads();
       this.getSuppliers();
       this.getMines();
       this.getCooperatives();
@@ -120,11 +137,20 @@ export class ModalFormComponent {
    }
 
    private getLoads() {
-      this.loadService.getSearch(LOAD_STATUS_KEY.PENDING).subscribe({
-         next: (res) => {
-            this.loads = res;
-         },
-      });
+      if (this.isEdit()) {
+         this.loadService.findById(this.selectedLiquidation.loadId).subscribe({
+            next: (res) => {
+               this.loads = [res];
+               this.onChagedLoad();
+            },
+         });
+      } else {
+         this.loadService.getSearch(LOAD_STATUS_KEY.PENDING).subscribe({
+            next: (res) => {
+               this.loads = res;
+            },
+         });
+      }
    }
 
    private getSuppliers() {
@@ -174,8 +200,6 @@ export class ModalFormComponent {
          admissionDate: transformDateBackToDateFront(liquidation.admissionDate),
          liquidationDate: transformDateBackToDateFront(liquidation.liquidationDate)
       });
-      this.metricWetKilograms = liquidation.metricWetTonnes * 1000;
-      this.onChagedLoad();
       this.calculateSolidMetricWetTonnes();
    }
 
@@ -234,10 +258,10 @@ export class ModalFormComponent {
    }
 
    public onChagedLoad() {
+      this.getTotalAdvance();
       const load: Load = this.loads.find(l => l.id == this.formLiquidation.value.loadId);
       this.correlativeLotCode.set(load.correlativeLotCode);
       if (!this.isEdit()) {
-         this.metricWetKilograms = load.weight;
          this.formLiquidation.patchValue({
             admissionDate: new Date(load.date + ' '),
             supplierId: load.supplierId,
@@ -245,6 +269,7 @@ export class ModalFormComponent {
             mineralId: load.mineralId,
             typeMineralId: load.typeMineralId,
             mineId: load.mineId,
+            metricWetKilograms: load.weight
          });
          this.onChangedWetKilograms();
          this.onChangedCooperative();
@@ -270,16 +295,11 @@ export class ModalFormComponent {
    }
 
    public onChangedWetKilograms() {
-      this.formLiquidation.patchValue({
-         metricWetTonnes: this.metricWetKilograms
-            ? this.metricWetKilograms / 1000
-            : 0,
-      });
       this.calculateSolidMetricWetTonnes();
    }
 
    public calculateSolidMetricWetTonnes() {
-      const metricWetTonnes = this.formLiquidation.get('metricWetTonnes')?.value || 0;
+      const metricWetTonnes = (this.formLiquidation.get('metricWetKilograms')?.value || 0) / 1000;
       const percentHumidity: number = this.formLiquidation.get('humidityPercentage')?.value / 100 || 0;
       const humidityInTonnes: number = metricWetTonnes * percentHumidity;
       this.solidMetricTonnes = metricWetTonnes - humidityInTonnes;
@@ -297,13 +317,13 @@ export class ModalFormComponent {
    }
 
    public calculateDiscounts() {
-      this.calculateRoyalties();
       this.miningRoyaltiesDiscount = this.totalImportBs * ((this.formLiquidation.get('miningRoyalties').value || 0) / 100);
       this.cajaNacionalDiscount = this.totalImportBs * ((this.formLiquidation.get('cajaNacional').value || 0) / 100);
       this.fedecominDiscount = this.totalImportBs * ((this.formLiquidation.get('fedecomin').value || 0) / 100);
       this.fencominDiscount = this.totalImportBs * ((this.formLiquidation.get('fencomin').value || 0) / 100);
       this.comibolDiscount = this.totalImportBs * ((this.formLiquidation.get('comibol').value || 0) / 100);
       this.cooperativeContributionDiscount = this.totalImportBs * ((this.formLiquidation.get('cooperativeContribution').value || 0) / 100);
+      this.calculateRoyalties();
    }
 
    private calculateRoyalties() {

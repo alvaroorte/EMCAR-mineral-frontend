@@ -4,6 +4,7 @@ import { DataBase } from './base-common.interface';
 export interface Liquidation extends DataBase {
    id: number;
    supplierId: number;
+   loadId: number;
    lotId: number;
    mineralId: number;
    mineId: number;

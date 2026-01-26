@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "emcar": {
+    "comcar": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -15,45 +15,51 @@
       "prefix": "app",
       "architect": {
         "build": {
-           "builder": "@angular-devkit/build-angular:application",
-           "options": {
-              "outputPath": {
-                "base": "dist/emcar"
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/comcar"
+            },
+            "index": "src/index.html",
+            "polyfills": [
+              "zone.js",
+              "src/polyfills.ts"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              {
+                "bundleName": "styles-light",
+                "input": "src/styles-light.scss",
+                "inject": false
               },
-              "index": "src/index.html",
-              "polyfills": ["zone.js", "src/polyfills.ts"],
-              "tsConfig": "tsconfig.app.json",
-              "inlineStyleLanguage": "scss",
-              "assets": ["src/favicon.ico", "src/assets"],
-              "styles": [
-                {
-                  "bundleName": "styles-light",
-                  "input": "src/styles-light.scss",
-                  "inject": false
-                },
-                {
-                  "bundleName": "styles-dark",
-                  "input": "src/styles-dark.scss",
-                  "inject": false
-                },
-                "primeicons/primeicons.css",
-                "primeflex/primeflex.css"
-              ],
-              "scripts": [],
-              "browser": "src/main.ts"
-           },
+              {
+                "bundleName": "styles-dark",
+                "input": "src/styles-dark.scss",
+                "inject": false
+              },
+              "primeicons/primeicons.css",
+              "primeflex/primeflex.css"
+            ],
+            "scripts": [],
+            "browser": "src/main.ts"
+          },
           "configurations": {
             "production": {
               "budgets": [
                 {
-                    "type": "initial",
-                    "maximumWarning": "6mb",
-                    "maximumError": "7mb"
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "7mb"
                 },
                 {
-                    "type": "anyComponentStyle",
-                    "maximumWarning": "2kb",
-                    "maximumError": "4kb"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "outputHashing": "all",
@@ -63,22 +69,22 @@
               "namedChunks": true,
               "fileReplacements": [
                 {
-                    "replace": "src/app/core/environments/environment.development.ts",
-                    "with": "src/app/core/environments/environment.ts"
+                  "replace": "src/app/core/environments/environment.development.ts",
+                  "with": "src/app/core/environments/environment.ts"
                 }
               ]
             },
             "development": {
               "optimization": false,
-                "extractLicenses": false,
-                "sourceMap": true,
-                "namedChunks": true,
-                "fileReplacements": [
-                  {
-                      "replace": "src/app/core/environments/environment.ts",
-                      "with": "src/app/core/environments/environment.development.ts"
-                  }
-                ]
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/environments/environment.ts",
+                  "with": "src/app/core/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "development"
@@ -87,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "emcar:build:production"
+              "buildTarget": "comcar:build:production"
             },
             "development": {
-              "buildTarget": "emcar:build:development"
+              "buildTarget": "comcar:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -98,7 +104,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "emcar:build"
+            "buildTarget": "comcar:build"
           }
         },
         "test": {

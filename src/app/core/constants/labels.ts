@@ -152,6 +152,7 @@ export const LABELS = Object.freeze({
    creationDate: 'Fecha creación',
    issueDate: 'Fecha emisión',
    email: 'Correo electrónico',
+   role: 'Role',
    additionalInfo: 'Información adicional',
    nationalExpensesCost: 'Gastos nacionales',
    internationalExpensesCost: 'Gastos internacionales',
@@ -220,6 +221,7 @@ export const LABELS = Object.freeze({
    currentNumber: 'Número actutal',
    surname: 'Apellido',
    surnames: 'Apellidos',
+   userName: 'Nombre de usuario',
    productDescription: 'Descripción del producto',
    homologationDescription: 'Descripción de homologación',
    discountAmount: 'Descuento',
@@ -246,6 +248,10 @@ export const LABELS = Object.freeze({
    wilstermann: 'WILSTERMANN',
    cooperativeContribution: 'Contribución cooperativa',
    miningRoyalties: 'Regalías mineras',
+   weakPassword: 'Contraseña débil',
+   mediumPassword: 'Contraseña media',
+   choosePassword: 'Escoja una contraseña',
+   safePassword: 'Contraseña segura',
 } as const);
 
 export const TITLES = Object.freeze({
