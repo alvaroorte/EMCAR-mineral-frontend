@@ -63,7 +63,7 @@ export class WelcomeComponent implements AfterViewInit {
     this.loginService.login(data).subscribe({
       next: (res) => {
         this.localStorageService.set(LOCAL_STORAGE.TOKEN, res.token);
-        this.helpersService.messageNotification("success", "Correcto", `¡${res.username} Bienvenido!.`, 3000);
+        this.helpersService.messageNotification("success", "Correcto", `¡${res.username?? ''} Bienvenido!.`, 3000);
       }, complete: () => {
         this.loginService.setUser();
       }
