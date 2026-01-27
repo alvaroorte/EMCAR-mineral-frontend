@@ -9,6 +9,7 @@ import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
 import { ResetPassword, User } from '@core/interfaces/user.interface';
 import { ModalResetPasswordComponent } from '../components/modal-reset-password/modal-reset-password.component';
+import { Observable } from 'rxjs';
 
 @Injectable({
    providedIn: 'root',
@@ -28,7 +29,8 @@ export class UserService extends CrudService<User> implements IServiceCommon {
       return this.http.post<User>(`${this.url}/register`, body);
    }
    
-   public resetPassword(userId: number, body: ResetPassword) {
-      return this.http.patch<User>(`${this.url}/reset-password/${userId}`, body);
+   public resetPassword(userId: number, body: ResetPassword): Observable<string> {
+      return this.http.patch(`${this.url}/reset-password/${userId}`, body, {responseType: 'text'});
    }
+
 }
