@@ -7,7 +7,8 @@ import { GenericTableComponent } from '@shared/components/generic-table/generic-
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
-import { User } from '@core/interfaces/user.interface';
+import { ResetPassword, User } from '@core/interfaces/user.interface';
+import { ModalResetPasswordComponent } from '../components/modal-reset-password/modal-reset-password.component';
 
 @Injectable({
    providedIn: 'root',
@@ -16,6 +17,7 @@ export class UserService extends CrudService<User> implements IServiceCommon {
    @Output() eventFormComponent: EventEmitter<ModalFormComponent> = new EventEmitter();
    @Output() eventTableComponent: EventEmitter<GenericTableComponent<User>> = new EventEmitter();
    @Output() eventModalDeleteComponent: EventEmitter<ModaldeleteComponent> = new EventEmitter();
+   @Output() eventModalResetPassword: EventEmitter<ModalResetPasswordComponent> = new EventEmitter();
 
    constructor(
       protected override http: HttpClient,
@@ -23,6 +25,10 @@ export class UserService extends CrudService<User> implements IServiceCommon {
    ) { super( http, `${environment.server_url}/users`, httpErrorHandlerService) }
 
    public register(body: User) {
-    return this.http.post<User>(`${this.url}/register`, body);
-  }
+      return this.http.post<User>(`${this.url}/register`, body);
+   }
+   
+   public resetPassword(userId: number, body: ResetPassword) {
+      return this.http.patch<User>(`${this.url}/reset-password/${userId}`, body);
+   }
 }

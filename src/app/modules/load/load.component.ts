@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ToolbarComponent } from '@shared/components/toolbar/toolbar.component';
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
 import { LABELS } from '@core/constants/labels';
@@ -8,6 +8,7 @@ import { LoadModule } from './load.module';
 import { LoadService } from './services/load.service';
 import { Load } from '@core/interfaces/load.interface';
 import { AdvanceLoadComponent } from '../advance-load/advance-load.component';
+import { LOAD_STATUS_KEY, LOAD_STATUS_VALUE } from '@core/enums/load.enum';
 
 @Component({
     selector: 'app-load',
@@ -22,6 +23,7 @@ export class LoadComponent implements OnInit {
   public tableColumnDefinitions = TableColumnDefinitions.getDefaultLoadColumnsDefinitions();
   public selectedLoad: Load;
   public loads: Load[] = [];
+  public showEdit = signal<boolean>(true);
 
   ngOnInit(): void {
     this.getLoads();
@@ -38,6 +40,7 @@ export class LoadComponent implements OnInit {
   public setSelected(load: Load) {
     this.loadService.setSelectedRow(load);
     this.selectedLoad = load;
+    this.showEdit.set(load?.state == LOAD_STATUS_VALUE.PENDING);
   }
 
   public onTableSelfEmision(table: GenericTableComponent<Load>) {

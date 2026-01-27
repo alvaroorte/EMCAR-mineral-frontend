@@ -8,6 +8,7 @@ import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-dele
 import { CrudService } from '@core/services/crud.service';
 import { HttpErrorHandlerService } from '@core/services/http-error-handler.service';
 import { Liquidation } from '@core/interfaces/liquidation.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class LiquidationService extends CrudService<Liquidation> implements ISer
     protected override http: HttpClient,
     protected override httpErrorHandlerService: HttpErrorHandlerService) {
     super(http, `${environment.server_url}/liquidations`, httpErrorHandlerService);
+  }
+
+  public getReport(liquidationId: number): Observable<ArrayBuffer> {
+    return this.http.get(`${this.url}/report/${liquidationId}`, { responseType: 'arraybuffer'});
   }
 
 }

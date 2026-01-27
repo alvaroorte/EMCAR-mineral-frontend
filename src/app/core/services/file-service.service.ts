@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output, inject } from '@angular/core';
 import { MimeTypeEnum } from '@core/enums/mime-type';
 import { environment } from '@core/environments/environment.development';
-import { attachmentResponse } from '@core/interfaces/Attachment.interface';
+import { AttachmentResponse } from '@core/interfaces/Attachment.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,14 +17,14 @@ export class FileService {
    private serverUrlMedia: string = environment.server_url + "media";
 
    private upload(dataBody: FormData) {
-      return this.http.post<attachmentResponse>(`${this.serverUrlMedia}/upload`, dataBody)
+      return this.http.post<AttachmentResponse>(`${this.serverUrlMedia}/upload`, dataBody)
    }
 
    public getFile(fileName: string): Observable<ArrayBuffer> {
       return this.http.get(`${this.serverUrlMedia}/${fileName}`, { responseType: 'arraybuffer'})
    }
 
-   public uploadFile(archivoUploaded: File, description: string): Promise<attachmentResponse> {
+   public uploadFile(archivoUploaded: File, description: string): Promise<AttachmentResponse> {
       return new Promise((resolve, reject) => {
          const formData = new FormData();
          formData.append('file', archivoUploaded);
@@ -40,6 +40,10 @@ export class FileService {
       })
    }
 
+   public convertArraybufferToFile(arraybuffer: ArrayBuffer, fileName: string, mimeType: MimeTypeEnum): File {
+      return new File([arraybuffer], fileName, { type: mimeType })
+   }
+   
    public convertBase64ToFile(base64String: string, fileName: string, mimeType: MimeTypeEnum): File {
       const byteCharacters = atob(base64String);
       const byteNumbers = new Array(byteCharacters.length);
@@ -74,5 +78,10 @@ export class FileService {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
+   }
+
+   public openPdfInNewTab(file: File) {
+      const url = URL.createObjectURL(file);
+      window.open(url, '_blank');
    }
 }

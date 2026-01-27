@@ -54,6 +54,13 @@ export class FormUtils {
       });
    }
 
+   static getDefaultResetPasswordFormGroup(): FormGroup {
+      return new FormGroup({
+         newPassword: new FormControl<string>('', [ Validators.required, Validators.minLength(LIMITS.minLengthPassword), noSpaceValidator]),
+         confirmationPassword: new FormControl<string>('', [ Validators.required, Validators.minLength(LIMITS.minLengthPassword), noSpaceValidator])
+      });
+   }
+
    static getDefaultMineralFormGroup(): FormGroup {
       return new FormGroup({
          name: new FormControl<string>('', [
@@ -245,9 +252,7 @@ export class FormUtils {
          lawSilver: new FormControl<number>(null),
          lawZinc: new FormControl<number>(null),
          lawLead: new FormControl<number>(null),
-         humidityPercentage: new FormControl<number>(null, [
-            Validators.required,
-         ]),
+         humidityPercentage: new FormControl<number>(null, [Validators.required,]),
          metricWetKilograms: new FormControl<number>(null, [Validators.required]),
          miningRoyalties: new FormControl<number>(null),
          quotationSilver: new FormControl<number>(null),
@@ -263,6 +268,7 @@ export class FormUtils {
          cooperativeContribution: new FormControl<number>(null),
          firstAdvance: new FormControl<number>(null),
          secondAdvance: new FormControl<number>(null),
+         transportationBonus: new FormControl<number>(null),
       });
    }
 }

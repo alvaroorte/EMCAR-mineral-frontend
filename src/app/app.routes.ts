@@ -7,8 +7,8 @@ export const routes: Routes = [
    {
       path: 'login',
       loadComponent: () =>
-         import('./modules/welcome/welcome.component').then(
-            (c) => c.WelcomeComponent,
+         import('./modules/login/login.component').then(
+            (c) => c.LoginComponent,
          ),
    },
    {
@@ -84,6 +84,13 @@ export const routes: Routes = [
             (c) => c.UserComponent,
          ),
       canActivate: [authGuard],
+   },
+   {
+      path: 'welcome',
+      loadComponent: () =>
+         import('./modules/welcome/welcome.component').then(
+            (c) => c.WelcomeComponent,
+         )
    },
    {
       path: '**',

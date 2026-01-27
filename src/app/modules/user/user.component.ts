@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ToolbarComponent } from '@shared/components/toolbar/toolbar.component';
 import { ModaldeleteComponent } from '@shared/components/modal-delete/modal-delete.component';
-import { LABELS } from '@core/constants/labels';
+import { LABELS, TOOLTIPS } from '@core/constants/labels';
 import { GenericTableComponent } from '@shared/components/generic-table/generic-table.component';
 import { TableColumnDefinitions } from '@core/utils/table-column-definitions';
 import { UserModule } from './user.module';
@@ -22,6 +22,7 @@ export class UserComponent implements OnInit {
    public userService = inject(UserService);
 
    public readonly labels = LABELS;
+   public readonly tooltips = TOOLTIPS;
    public tableColumnDefinitions = TableColumnDefinitions.getDefaultUserColumnsDefinitions();
    public selectedUser: User;
    public users: User[] = [];
@@ -45,5 +46,9 @@ export class UserComponent implements OnInit {
 
    public onTableSelfEmision(table: GenericTableComponent<User>) {
       this.userService.eventTableComponent.emit(table);
+   }
+
+   public changePassword() {
+      this.userService.eventModalResetPassword.emit();
    }
 }

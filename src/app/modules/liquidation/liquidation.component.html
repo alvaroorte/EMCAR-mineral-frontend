@@ -2,24 +2,25 @@
     <p-fieldset styleClass="sombra-black">
         <ng-template pTemplate="header">
             <div class="flex align-items-center text-primary fadeinleft animation-duration-400">
-                <h2 class="text-white"> {{ labels.liquidations}} <span class="text-sm"> Gestión de liquidaciones</span> </h2>
+                <h2 class="text-white"> {{ labels.liquidations}} <span class="text-sm"> Gestión de liquidaciones</span>
+                </h2>
             </div>
         </ng-template>
         <div class="grid">
             <div class="col-12 fadeindown animation-duration-400">
                 <div class="sombra-black border-round-xl p-2 surface-0">
-                    <app-toolbar-common
-                        [serviceGeneric]="liquidationService" 
-                        [object]="selectedLiquidation"/> 
-                    <app-modal-form ></app-modal-form> 
-                    <app-modal-delete [serviceGeneric]="liquidationService" [objectId]="selectedLiquidation?.id"></app-modal-delete>
-                    <app-generic-table 
-                        [items]="liquidations"
-                        [tableColumnDefinitions]="tableColumnDefinitions"
-                        (onSelection)="setSelected($event)"
-                        (requestData)="getLiquidations()"
-                        (selfEmitter)="onTableSelfEmision($event)"
-                    ></app-generic-table>
+                    <app-toolbar-common [serviceGeneric]="liquidationService" [object]="selectedLiquidation">
+                        <p-button icon="pi pi-file-pdf" [pTooltip]="tooltips.printLiquidation" size="small"
+                            [rounded]="true" severity="danger"
+                            styleClass="mr-2 sombra-black hover-danger fadeinup animation-ease-in-out animation-duration-300"
+                            (click)="getReport()"></p-button>
+                    </app-toolbar-common>
+                    <app-modal-form></app-modal-form>
+                    <app-modal-delete [serviceGeneric]="liquidationService"
+                        [objectId]="selectedLiquidation?.id"></app-modal-delete>
+                    <app-generic-table [items]="liquidations" [tableColumnDefinitions]="tableColumnDefinitions"
+                        (onSelection)="setSelected($event)" (requestData)="getLiquidations()"
+                        (selfEmitter)="onTableSelfEmision($event)"></app-generic-table>
                 </div>
             </div>
         </div>

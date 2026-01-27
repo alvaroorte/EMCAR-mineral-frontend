@@ -12,7 +12,8 @@
               <p-float-label>
                 <p-select inputId="liquidationType" formControlName="liquidationType"
                   [options]="liquidationTypes | keyvalue" optionLabel="value" optionValue="value" [filter]="true"
-                  filterBy="value" styleClass="w-full" appendTo="body"></p-select>
+                  filterBy="value" styleClass="w-full" appendTo="body"
+                  (onChange)="onChangedLiquidationType()"></p-select>
                 <label for="liquidationType" class="text-lg font-bold text-800 required-field"> {{
                   labels.liquidationType }} </label>
               </p-float-label>
@@ -420,19 +421,27 @@
                     </td>
                   </tr>
                   <tr class="font-bold text-xl">
-                    <td class="text-right pt-4" colspan="2">{{ labels.totalDiscounts }} Bs</td>
+                    <td class="text-right pt-4 pr-3" colspan="2">{{ labels.totalDiscounts }} Bs</td>
                     <td class="text-right">
                       {{ totalDiscountsBs | formatFieldAmount }}
                     </td>
                   </tr>
                   <tr class="font-bold text-xl">
-                    <td class="text-right pt-2" colspan="2">{{ labels.liquidPayable }} Bs</td>
+                    <td class="text-right pt-2 pr-3" colspan="2">{{ labels.transportationBonus }} Bs</td>
+                    <td>
+                      <p-inputNumber id="transportationBonus" mode="decimal" locale="en-US" [minFractionDigits]="2"
+                        [maxFractionDigits]="2" [useGrouping]="false" [min]="0" formControlName="transportationBonus"
+                        styleClass="w-full" (onInput)="calculateTotals()" />
+                    </td>
+                  </tr>
+                  <tr class="font-bold text-xl">
+                    <td class="text-right pt-2 pr-3" colspan="2">{{ labels.liquidPayable }} Bs</td>
                     <td class="text-right">
                       {{ liquidPayableBs | formatFieldAmount }}
                     </td>
                   </tr>
                   <tr class="font-bold text-xl">
-                    <td class="text-right pt-2" colspan="2">{{ labels.liquidPayable }} USD</td>
+                    <td class="text-right pt-2 pr-3" colspan="2">{{ labels.liquidPayable }} USD</td>
                     <td class="text-right">
                       {{ liquidPayableUsd | formatFieldAmount }}
                     </td>

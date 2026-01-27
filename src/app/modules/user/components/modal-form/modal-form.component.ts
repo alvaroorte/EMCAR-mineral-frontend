@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { HelpersService } from '@core/services/helpers.service';
 import { MESSAGES } from '@core/constants/messages';
 import { LABEL_BUTTONS, LABELS } from '@core/constants/labels';
@@ -28,8 +28,8 @@ export class ModalFormComponent {
    public openModal: boolean = false;
    public tittleForm: string = '';
    public formUser: FormGroup = FormUtils.getDefaultUserFormGroup();
+   public isEdit = signal<boolean>(false);
    private tableComponent: GenericTableComponent<User>;
-   private isEdit = signal<boolean>(false);
 
    ngOnInit() {
       this.registerTableComponentListener();
@@ -42,6 +42,7 @@ export class ModalFormComponent {
    }
 
    private openCreate() {
+      this.formUser.get('password').addValidators(Validators.required);
       this.reset();
       this.formUser.patchValue({
          state: true
@@ -52,6 +53,7 @@ export class ModalFormComponent {
    }
 
    private openEdit(id: number) {
+      this.formUser.get('password').removeValidators(Validators.required);
       this.reset();
       this.tittleForm = 'Editar usuario';
       this.userService.findById(id).subscribe({

@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { HelpersService } from '@core/services/helpers.service';
 import { MESSAGES } from '@core/constants/messages';
 import { LABEL_BUTTONS, LABELS } from '@core/constants/labels';
@@ -109,11 +109,6 @@ export class ModalFormComponent {
             this.updateFormValues(res);
             this.getLoads();
             this.openModal = true;
-            setTimeout(() => {
-               console.log(this.formLiquidation.value);
-               
-            }, 5000);
-            
          },
       });
    }
@@ -196,7 +191,6 @@ export class ModalFormComponent {
    private updateFormValues(liquidation: Liquidation) {
       this.formLiquidation.patchValue({
          ...liquidation,
-         loadId: 1,
          admissionDate: transformDateBackToDateFront(liquidation.admissionDate),
          liquidationDate: transformDateBackToDateFront(liquidation.liquidationDate)
       });
@@ -257,9 +251,24 @@ export class ModalFormComponent {
          .subscribe((Liquidation) => (this.selectedLiquidation = Liquidation));
    }
 
+   public onChangedLiquidationType() {
+      if (this.formLiquidation.value.liquidationType == LIQUIDATION_TYPE_ENUM.PARTICULAR) {
+         this.formLiquidation.get('cooperativeId').removeValidators(Validators.required);
+         this.formLiquidation.get('mineId').removeValidators(Validators.required);
+      } else {
+         this.formLiquidation.get('cooperativeId').addValidators(Validators.required);
+         this.formLiquidation.get('mineId').addValidators(Validators.required);
+      }
+      this.formLiquidation.get('cooperativeId').updateValueAndValidity();
+      this.formLiquidation.get('mineId').updateValueAndValidity();
+   }
+
    public onChagedLoad() {
+      
       this.getTotalAdvance();
+      console.log(this.formLiquidation.value.loadId);
       const load: Load = this.loads.find(l => l.id == this.formLiquidation.value.loadId);
+      console.log(load);
       this.correlativeLotCode.set(load.correlativeLotCode);
       if (!this.isEdit()) {
          this.formLiquidation.patchValue({
@@ -372,7 +381,7 @@ export class ModalFormComponent {
          this.fencominDiscount +
          this.comibolDiscount +
          this.cooperativeContributionDiscount;
-      this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs;
+      this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs + parseFloat(this.formLiquidation.value.transportationBonus?? 0);
       this.liquidPayableUsd = this.liquidPayableBs / (this.formLiquidation.value.exchangeRate?? 1);
    }
 }

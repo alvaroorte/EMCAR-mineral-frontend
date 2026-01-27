@@ -1,3 +1,4 @@
+import { LOAD_STATUS_VALUE } from '@core/enums/load.enum';
 import { DataBase } from './base-common.interface';
 
 export interface Load extends DataBase {
@@ -20,7 +21,7 @@ export interface Load extends DataBase {
    typeMineralName: string;
    mineName: string;
    cooperativeName: string;
-   state: string;
+   state: LOAD_STATUS_VALUE;
 }
 
 export interface CorrelativeLot {

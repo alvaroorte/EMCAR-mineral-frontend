@@ -22,6 +22,7 @@ import { CooperativeService } from 'src/app/modules/cooperative/services/coopera
 import { Cooperative } from '@core/interfaces/cooperative.interface';
 import { TypeMineral } from '@core/interfaces/type-mineral.interface';
 import { LOT_ASSIGNMENT_KEY } from '@core/enums/lot.enum';
+import { transformDateBackToDateFront } from '@core/utils/dateFormats';
 
 @Component({
    selector: 'app-modal-form',
@@ -159,9 +160,10 @@ export class ModalFormComponent {
       });
    }
 
-   private updateFormValues(Load: Load) {
+   private updateFormValues(load: Load) {
       this.formLoad.patchValue({
-         ...Load,
+         ...load,
+         date: transformDateBackToDateFront(load.date)
       });
    }
 

@@ -2,8 +2,8 @@
     height: calc(100vh - 180px);
 }
 
-.title-welcome {
-    font-size: clamp(2.5rem, 3.8vw, 5rem);
+.title-login {
+    font-size: clamp(2.5rem, 3vw, 5rem);
 }
 
 .typing-effect {
@@ -13,7 +13,7 @@
     animation: typing 2.5s steps(35, end) forwards, blink-caret 0.70s step-end infinite;
 }
 
-.background-gray-blured-welcome {
+.background-gray-blured-login {
     border-radius: 15px;
     background-color: rgb(187 187 187 / 60%);
     ;
@@ -39,27 +39,5 @@
 
     50% {
         border-color: black;
-    }
-}
-
-.floating-img {
-    width: 50vw;
-    animation: float 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 12px rgba(0, 110, 255, 0.5));
-}
-
-
-/* Animación */
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-
-    100% {
-        transform: translateY(0px);
     }
 }

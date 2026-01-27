@@ -258,6 +258,11 @@ export class TableColumnDefinitions {
             initiallyHidden: true,
          },
          {
+            field: 'state',
+            header: LABELS.status,
+            columnType: TableColumnType.TEXT,
+         },
+         {
             field: 'createdBy',
             header: LABELS.createdBy,
             columnType: TableColumnType.TEXT,
@@ -265,11 +270,6 @@ export class TableColumnDefinitions {
          {
             field: 'updatedBy',
             header: LABELS.updatedBy,
-            columnType: TableColumnType.TEXT,
-         },
-         {
-            field: 'state',
-            header: LABELS.status,
             columnType: TableColumnType.TEXT,
          },
       ];
@@ -404,8 +404,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.TEXT,
          },
          {
-            field: 'email',
-            header: LABELS.email,
+            field: 'username',
+            header: LABELS.userName,
             columnType: TableColumnType.TEXT,
          },
          {
@@ -416,7 +416,7 @@ export class TableColumnDefinitions {
          {
             field: 'state',
             header: LABELS.status,
-            columnType: TableColumnType.TEXT,
+            columnType: TableColumnType.STATUS,
          },
       ];
    }

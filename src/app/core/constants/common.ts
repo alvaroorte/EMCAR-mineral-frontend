@@ -8,7 +8,8 @@ export const common = {
   dateTimeDisplayFormat: 'dd/MM/yyyy HH:mm',
   dateForBack: 'yyyy-MM-dd',
   decimalsAllowed: '.2-2',
-  numberLocaleFormat: 'en-US'
+  numberLocaleFormat: 'en-US',
+  basePage: '/welcome'
 } as const
 
 export const TABLE_ASCENDING_SORT_ORDER = 1;

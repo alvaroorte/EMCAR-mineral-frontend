@@ -5,9 +5,13 @@ import { ModalFormComponent } from './components/modal-form/modal-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '@core/pipes/pipes.module';
 import { MessageRequiredFieldComponent } from '../../shared/components/message-required-field/message-required-field.component';
+import { ModalResetPasswordComponent } from './components/modal-reset-password/modal-reset-password.component';
 
 @NgModule({
-   declarations: [ModalFormComponent],
+   declarations: [
+      ModalFormComponent,
+      ModalResetPasswordComponent
+   ],
    imports: [
       CommonModule,
       PipesModule,
@@ -20,6 +24,7 @@ import { MessageRequiredFieldComponent } from '../../shared/components/message-r
       CommonModule,
       PrimeComponentsModule,
       ModalFormComponent,
+      ModalResetPasswordComponent,
       FormsModule,
    ],
 })

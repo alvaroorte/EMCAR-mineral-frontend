@@ -11,3 +11,8 @@ export interface User extends DataBase {
   role: ROLES_VALUE_SYSTEM,
   state: boolean
 }
+
+export interface ResetPassword {
+  newPassword: string,
+  confirmationPassword: string,
+}
