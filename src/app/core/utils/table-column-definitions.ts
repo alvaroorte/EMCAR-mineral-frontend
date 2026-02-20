@@ -395,8 +395,8 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.AMOUNT,
          },
          {
-            field: 'totalPrice',
-            header: LABELS.total,
+            field: 'amountPayableBc',
+            header: LABELS.liquidPayable + ' Bs',
             columnType: TableColumnType.AMOUNT,
          },
          {

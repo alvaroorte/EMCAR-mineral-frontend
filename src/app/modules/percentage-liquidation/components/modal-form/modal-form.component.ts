@@ -50,7 +50,6 @@ export class ModalFormComponent {
    public totalImportBs: number = 0;
    public totalDiscountsBs: number = 0;
    public liquidPayableBs: number = 0;
-   public liquidPayableUsd: number = 0;
    public formPercentageLiquidation: FormGroup = FormUtils.getDefaultPercentageLiquidationFormGroup();
    private tableComponent: GenericTableComponent<PercentageLiquidation>;
    private isEdit = signal<boolean>(false);
@@ -234,6 +233,5 @@ export class ModalFormComponent {
          this.comibolDiscount +
          parseFloat(this.formPercentageLiquidation.value.firstAdvance?? 0);
       this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs + parseFloat(this.formPercentageLiquidation.value.transportationBonus?? 0);
-      this.liquidPayableUsd = this.liquidPayableBs / (this.formPercentageLiquidation.value.exchangeRate?? 1);
    }
 }
