@@ -265,29 +265,16 @@
             </div>
             <div class="col-6">
               <h3 class="text-center text-xl font-bold">{{ labels.discounts }}</h3>
-              <table class="mt-2 border-1 border-round border-solid pr-3 py-3 surface-ground">
+              @if (formLiquidation.value.liquidationType == liquidationTypes.COOPERATIVE) {
+              <table class="mt-2 border-1 border-round border-solid pr-3 py-3 surface-ground w-full">
                 <thead>
                   <tr>
-                    <th class="w-5 text-lg font-semibold">Concepto</th>
-                    <th class="w-5 text-lg font-semibold">Porcentaje %</th>
-                    <th class="w-2 text-lg font-semibold text-right">Sub Total (Bs)</th>
+                    <th class="w-4 text-lg font-semibold">{{ labels.royalties }}</th>
+                    <th class="w-5 text-lg font-semibold">Cot. Semanal</th>
+                    <th class="w-3 text-lg font-semibold text-right"> {{ labels.subTotal }} (Bs)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <h4 class="text-center mr-4">{{ labels.rmPercentage }}</h4>
-                    </td>
-                    <td>
-                      <p-inputNumber id="miningRoyalties" mode="decimal" locale="en-US" [minFractionDigits]="2"
-                        [maxFractionDigits]="2" [useGrouping]="false" [min]="limits.minPercent"
-                        [max]="limits.maxPercent" formControlName="miningRoyalties" styleClass="w-full"
-                        (onInput)="calculateDiscounts()" />
-                    </td>
-                    <td class="text-right">
-                      <h4>{{ miningRoyaltiesDiscount | formatFieldAmount }}</h4>
-                    </td>
-                  </tr>
                   <tr>
                     <td>
                       <h4 class="text-center mr-4">{{ labels.royaltySilver }}</h4>
@@ -328,6 +315,32 @@
                     </td>
                     <td class="text-right">
                       <h4>{{ formLiquidation.value.royaltyLead?? 0 | formatFieldAmount }}</h4>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              }
+              <table class="mt-2 border-1 border-round border-solid pr-3 py-3 surface-ground">
+                <thead>
+                  <tr>
+                    <th class="w-5 text-lg font-semibold"> {{ labels.concept }} </th>
+                    <th class="w-5 text-lg font-semibold"> {{ labels.percentage }} %</th>
+                    <th class="w-2 text-lg font-semibold text-right"> {{ labels.subTotal }} (Bs)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <h4 class="text-center mr-4">{{ labels.rmPercentage }}</h4>
+                    </td>
+                    <td>
+                      <p-inputNumber id="miningRoyalties" mode="decimal" locale="en-US" [minFractionDigits]="2"
+                        [maxFractionDigits]="2" [useGrouping]="false" [min]="limits.minPercent"
+                        [max]="limits.maxPercent" formControlName="miningRoyalties" styleClass="w-full"
+                        (onInput)="calculateDiscounts()" />
+                    </td>
+                    <td class="text-right">
+                      <h4>{{ miningRoyaltiesDiscount | formatFieldAmount }}</h4>
                     </td>
                   </tr>
                   <tr>
@@ -438,6 +451,15 @@
                     <td class="text-right pt-2 pr-3" colspan="2">{{ labels.liquidPayable }} Bs</td>
                     <td class="text-right">
                       {{ liquidPayableBs | formatFieldAmount }}
+                    </td>
+                  </tr>
+                  <tr class="font-bold text-xl">
+                    <td class="text-right pt-2 pr-3" colspan="2">{{ labels.exchangeRate }}</td>
+                    <td>
+                      <p-inputNumber id="exchangeRateAmountPayable" mode="decimal" locale="en-US"
+                        [minFractionDigits]="2" [maxFractionDigits]="2" [useGrouping]="false" [min]="0"
+                        formControlName="exchangeRateAmountPayable" styleClass="w-full"
+                        (onInput)="calculateTotalUSD()" />
                     </td>
                   </tr>
                   <tr class="font-bold text-xl">

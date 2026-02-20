@@ -33,8 +33,8 @@ export interface Liquidation extends DataBase {
    lawZinc: number;
    lawLead: number;
    humidityPercentage: number;
-   metricWetTonnes: number;
-   dryMetricTonnes: number;
+   metricWetKilograms: number;
+   dryMetricKilograms: number;
    quotationSilver: number;
    quotationZinc: number;
    quotationLead: number;

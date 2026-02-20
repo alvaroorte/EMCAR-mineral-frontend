@@ -78,6 +78,14 @@ export const routes: Routes = [
       canActivate: [authGuard],
    },
    {
+      path: 'percentage-liquidations',
+      loadComponent: () =>
+         import('./modules/percentage-liquidation/percentage-liquidation.component').then(
+            (c) => c.LiquidationComponent,
+         ),
+      canActivate: [authGuard],
+   },
+   {
       path: 'users',
       loadComponent: () =>
          import('./modules/user/user.component').then(

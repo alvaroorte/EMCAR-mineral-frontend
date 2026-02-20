@@ -6,6 +6,7 @@ export interface Company extends DataBase {
     socialReason: string;
     nit: number;
     purpose: string;
+    logo: string;
     nim: string;
     address: string;
     cellphone: string;

@@ -12,6 +12,7 @@ import { Load } from '@core/interfaces/load.interface';
 import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
 import { Liquidation } from '@core/interfaces/liquidation.interface';
 import { User } from '@core/interfaces/user.interface';
+import { PercentageLiquidation } from '@core/interfaces/percentage-liquidation.interface';
 
 export class TableColumnDefinitions {
    static getDefaultCompanyColumnsDefinitions(): TableColumn<Company>[] {
@@ -45,6 +46,11 @@ export class TableColumnDefinitions {
             field: 'cellphone',
             header: LABELS.phone,
             columnType: TableColumnType.NUMERIC,
+         },
+         {
+            field: 'logo',
+            header: LABELS.logo,
+            columnType: TableColumnType.IMAGE_BASE64,
          },
       ];
    }
@@ -354,8 +360,18 @@ export class TableColumnDefinitions {
             columnType: TableColumnType.AMOUNT,
          },
          {
-            field: 'metricWetTonnes',
+            field: 'metricWetKilograms',
             header: LABELS.weightKg,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'humidityPercentage',
+            header: LABELS.humidityPercentage,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'dryMetricKilograms',
+            header: LABELS.solidMetricKilograms,
             columnType: TableColumnType.AMOUNT,
          },
          {
@@ -388,6 +404,11 @@ export class TableColumnDefinitions {
             header: LABELS.createdBy,
             columnType: TableColumnType.TEXT,
          },
+         {
+            field: 'updatedBy',
+            header: LABELS.updatedBy,
+            columnType: TableColumnType.TEXT,
+         },
       ];
    }
 
@@ -417,6 +438,113 @@ export class TableColumnDefinitions {
             field: 'state',
             header: LABELS.status,
             columnType: TableColumnType.STATUS,
+         },
+      ];
+   }
+
+   static getDefaultPercentageLiquidationColumnsDefinitions(): TableColumn<PercentageLiquidation>[] {
+      return [
+         {
+            field: 'supplierName',
+            header: LABELS.clientName,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'percentageLiquidationDate',
+            header: LABELS.liquidationDate,
+            columnType: TableColumnType.DATE,
+         },
+         {
+            field: 'correlativeLotCode',
+            header: LABELS.lot,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'dryMetricKilograms',
+            header: LABELS.solidMetricKilograms,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'humidityPercentage',
+            header: LABELS.humidityPercentage,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'dmSilver',
+            header: LABELS.dmSilver,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'quotation',
+            header: LABELS.quotation,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'percentage',
+            header: LABELS.percentage,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'exchangeRate',
+            header: LABELS.exchangeRate,
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'miningRoyalties',
+            header: LABELS.miningRoyalties,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'comibol',
+            header: LABELS.comibol,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'cajaNacional',
+            header: LABELS.cajaNacional,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'fedecomin',
+            header: LABELS.fedecomin,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'fencomin',
+            header: LABELS.fencomin,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'firstAdvance',
+            header: LABELS.firstAdvance,
+            columnType: TableColumnType.AMOUNT
+         },
+         {
+            field: 'fencomin',
+            header: LABELS.fencomin,
+            columnType: TableColumnType.AMOUNT,
+            initiallyHidden: true
+         },
+         {
+            field: 'amountPayableBc',
+            header: LABELS.liquidPayable + ' Bs.',
+            columnType: TableColumnType.AMOUNT,
+         },
+         {
+            field: 'createdBy',
+            header: LABELS.createdBy,
+            columnType: TableColumnType.TEXT,
+         },
+         {
+            field: 'updatedBy',
+            header: LABELS.updatedBy,
+            columnType: TableColumnType.TEXT,
          },
       ];
    }

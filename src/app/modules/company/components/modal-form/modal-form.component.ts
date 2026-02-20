@@ -9,6 +9,10 @@ import { GenericTableComponent } from '@shared/components/generic-table/generic-
 import { Company } from '@core/interfaces/company.interface';
 import { FormUtils } from '@core/utils/form-groups';
 import { SEVERITY_ENUM } from '@core/enums/severity.enum';
+import { ModeInputFile } from '@core/enums/file.enum';
+import { fileTypeAllowed, maxImageSizeAllowed } from '@core/constants/file';
+import { FileService } from '@core/services/file-service.service';
+import { MimeTypeEnum } from '@core/enums/mime-type';
 
 @Component({
     selector: 'app-modal-form',
@@ -19,10 +23,15 @@ export class ModalFormComponent {
 
   private helpersService = inject(HelpersService);
   private companyService = inject(CompanyService);
+  private fileService = inject(FileService);
 
   public readonly labels = LABELS;
   public readonly messages = MESSAGES;
   public readonly buttons = LABEL_BUTTONS;
+  public readonly modeInputFile = ModeInputFile;
+  public readonly allowedImageFormat = fileTypeAllowed.allowedImageFormat;
+  public readonly maxImageSizeAllowed = maxImageSizeAllowed;
+  public file: File = null;
   public selectedCompany: Company;
   public openModal: boolean = false;
   public tittleForm: string = "";
@@ -61,6 +70,8 @@ export class ModalFormComponent {
   };
 
   private updateFormValues(company: Company) {
+    const fileName = "logo.png";
+    this.file = this.fileService.convertBase64ToFile(company.logo, fileName, MimeTypeEnum.IMAGE);
     this.formCompany.patchValue({
       ...company
     });
@@ -105,6 +116,16 @@ export class ModalFormComponent {
 
   private waitForDataSelection() {
     this.companyService.getSelectedRow().subscribe((company) => this.selectedCompany = company);
+  }
+
+  public async loadFile(dataFile: File) {
+    if (dataFile) {
+      const base64Image: string = await this.fileService.convertFileToBase64(dataFile, true)
+      this.formCompany.get('logo').patchValue(base64Image);
+      
+    } else
+      this.formCompany.get('image').patchValue(null);
+
   }
   
 }

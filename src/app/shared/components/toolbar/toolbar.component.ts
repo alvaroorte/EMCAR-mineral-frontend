@@ -16,7 +16,7 @@ export class ToolbarComponent<T extends IdBaseInterface> {
 
   @Input() serviceGeneric: any = null;
   @Input() object: T = null;
-  @Input() showReload: boolean = true;
+  @Input() showToolbar: boolean = true;
   @Input() showCreate: boolean = true;
   @Input() showEdit: boolean = true;
   @Input() showDelete: boolean = true;

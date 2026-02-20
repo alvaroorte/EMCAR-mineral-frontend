@@ -94,6 +94,7 @@ export class ModalFormComponent {
       this.getLoads();
       this.formLiquidation.patchValue({
          liquidationDate: new Date(),
+         exchangeRateAmountPayable: 6.96
       });
       this.tittleForm = 'Crear liquidación';
       this.isEdit.set(false);
@@ -259,6 +260,9 @@ export class ModalFormComponent {
          this.formLiquidation.get('cooperativeId').addValidators(Validators.required);
          this.formLiquidation.get('mineId').addValidators(Validators.required);
       }
+      this.formLiquidation.get('quotationSilver').reset();
+      this.formLiquidation.get('quotationZinc').reset();
+      this.formLiquidation.get('quotationLead').reset();
       this.formLiquidation.get('cooperativeId').updateValueAndValidity();
       this.formLiquidation.get('mineId').updateValueAndValidity();
    }
@@ -266,9 +270,7 @@ export class ModalFormComponent {
    public onChagedLoad() {
       
       this.getTotalAdvance();
-      console.log(this.formLiquidation.value.loadId);
       const load: Load = this.loads.find(l => l.id == this.formLiquidation.value.loadId);
-      console.log(load);
       this.correlativeLotCode.set(load.correlativeLotCode);
       if (!this.isEdit()) {
          this.formLiquidation.patchValue({
@@ -382,6 +384,10 @@ export class ModalFormComponent {
          this.comibolDiscount +
          this.cooperativeContributionDiscount;
       this.liquidPayableBs = this.totalImportBs - this.totalDiscountsBs + parseFloat(this.formLiquidation.value.transportationBonus?? 0);
-      this.liquidPayableUsd = this.liquidPayableBs / (this.formLiquidation.value.exchangeRate?? 1);
+      this.calculateTotalUSD();
+   }
+   
+   public calculateTotalUSD() {
+      this.liquidPayableUsd = this.liquidPayableBs / (this.formLiquidation.value.exchangeRateAmountPayable?? 1);
    }
 }

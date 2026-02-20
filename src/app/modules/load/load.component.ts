@@ -20,10 +20,11 @@ export class LoadComponent implements OnInit {
   public loadService = inject(LoadService);
 
   public readonly labels = LABELS;
+  public readonly LOAD_STATUS_VALUE = LOAD_STATUS_VALUE;
   public tableColumnDefinitions = TableColumnDefinitions.getDefaultLoadColumnsDefinitions();
   public selectedLoad: Load;
   public loads: Load[] = [];
-  public showEdit = signal<boolean>(true);
+  public canEditAndDelete = signal<boolean>(true);
 
   ngOnInit(): void {
     this.getLoads();
@@ -40,7 +41,7 @@ export class LoadComponent implements OnInit {
   public setSelected(load: Load) {
     this.loadService.setSelectedRow(load);
     this.selectedLoad = load;
-    this.showEdit.set(load?.state == LOAD_STATUS_VALUE.PENDING);
+    this.canEditAndDelete.set(load?.state == LOAD_STATUS_VALUE.PENDING);
   }
 
   public onTableSelfEmision(table: GenericTableComponent<Load>) {

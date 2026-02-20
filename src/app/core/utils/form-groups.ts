@@ -246,6 +246,7 @@ export class FormUtils {
          admissionDate: new FormControl<string>('', [Validators.required]),
          liquidationDate: new FormControl<string>('', [Validators.required]),
          exchangeRate: new FormControl<number>(null, [Validators.required]),
+         exchangeRateAmountPayable: new FormControl<number>(null, [Validators.required]),
          priceSilver: new FormControl<number>(null),
          priceZinc: new FormControl<number>(null),
          priceLead: new FormControl<number>(null),
@@ -268,6 +269,28 @@ export class FormUtils {
          cooperativeContribution: new FormControl<number>(null),
          firstAdvance: new FormControl<number>(null),
          secondAdvance: new FormControl<number>(null),
+         transportationBonus: new FormControl<number>(null),
+      });
+   }
+   
+   static getDefaultPercentageLiquidationFormGroup(): FormGroup {
+      return new FormGroup({
+         loadId: new FormControl<number>(null, [Validators.required]),
+         supplierId: new FormControl<number>(null, [Validators.required]),
+         admissionDate: new FormControl<string>('', [Validators.required]),
+         liquidationDate: new FormControl<string>('', [Validators.required]),
+         exchangeRate: new FormControl<number>(null, [Validators.required]),
+         quotation: new FormControl<number>(null, [Validators.required]),
+         percentage: new FormControl<number>(null, [Validators.required]),
+         dmSilver: new FormControl<number>(null, [Validators.required]),
+         humidityPercentage: new FormControl<number>(null, [Validators.required]),
+         metricWetKilograms: new FormControl<number>(null, [Validators.required]),
+         cajaNacional: new FormControl<number>(null),
+         fedecomin: new FormControl<number>(null),
+         fencomin: new FormControl<number>(null),
+         comibol: new FormControl<number>(null),
+         miningRoyalties: new FormControl<number>(null),
+         firstAdvance: new FormControl<number>(null),
          transportationBonus: new FormControl<number>(null),
       });
    }

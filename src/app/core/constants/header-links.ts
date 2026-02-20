@@ -3,17 +3,21 @@ import { ROLES_CODE_SYSTEM } from '../enums/roles.enum';
 
 export const urlsWithPermissions: MenuHeader[] = [
    {
+      routerLink: 'percentage-liquidations',
+      label: 'Liquidaciones por sacos',
+      access: [ROLES_CODE_SYSTEM.ADMIN],
+      show: true,
+   },
+   {
       routerLink: 'liquidations',
       label: 'Liquidaciones',
       access: [ROLES_CODE_SYSTEM.ADMIN],
-      icon: 'pi pi-dolar',
       show: true,
    },
    {
       routerLink: 'loads',
       label: 'Cargas',
       access: [ROLES_CODE_SYSTEM.ADMIN, ROLES_CODE_SYSTEM.MANAGER],
-      icon: 'pi pi-building',
       show: true,
    },
    {

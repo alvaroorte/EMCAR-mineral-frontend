@@ -5,7 +5,6 @@ import { ModalFormComponent } from './components/modal-form/modal-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '@core/pipes/pipes.module';
 import { MessageRequiredFieldComponent } from "../../shared/components/message-required-field/message-required-field.component";
-import { InputFileComponent } from '@shared/components/input-file/input-file.component';
 
 
 @NgModule({
@@ -18,8 +17,7 @@ import { InputFileComponent } from '@shared/components/input-file/input-file.com
     PrimeComponentsModule,
     ReactiveFormsModule,
     FormsModule,
-    MessageRequiredFieldComponent,
-    InputFileComponent
+    MessageRequiredFieldComponent
 ],
   exports: [
     CommonModule,
@@ -28,4 +26,4 @@ import { InputFileComponent } from '@shared/components/input-file/input-file.com
     FormsModule
   ]
 })
-export class HolidayModule { }
+export class PercentageLiquidationModule { }

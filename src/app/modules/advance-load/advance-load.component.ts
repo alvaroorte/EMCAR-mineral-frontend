@@ -16,6 +16,7 @@ import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
 export class AdvanceLoadComponent implements OnChanges {
 
   @Input({required: true}) loadId: number;
+  @Input() showToolbar: boolean = true;
 
   public advanceLoadService = inject(AdvanceLoadService);
 
