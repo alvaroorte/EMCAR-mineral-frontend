@@ -34,3 +34,6 @@ yarn-error.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+# Local Netlify folder
+.netlify
