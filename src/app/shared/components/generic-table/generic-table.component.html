@@ -114,6 +114,25 @@
               </div>
             </ng-template>
 
+            <ng-template [ngSwitchCase]="tableColumnFormatTypes.CHIP">
+              <p-chip styleClass="pl-0 py-0 pr-3">
+                <span class="border-circle flex align-items-center justify-content-center mr-2 py-1 px-2" [ngClass]="
+                    column.chipStyle
+                      ? column.chipStyle(row[column.field]).backgroundClass
+                      : ''
+                  ">
+                  {{ row[column.field] | uppercase | slice : 0 : 1 }}
+                </span>
+                <span class="ml-2 font-bold" [ngClass]="
+                    column.chipStyle
+                      ? column.chipStyle(row[column.field]).textClass
+                      : ''
+                  ">
+                  {{ row[column.field] }}
+                </span>
+              </p-chip>
+            </ng-template>
+
             <ng-container *ngSwitchDefault>
               {{row[column.field]}}
             </ng-container>

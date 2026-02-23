@@ -11,5 +11,6 @@ export enum TableColumnType {
   PERCENT,
   MAPPED,
   IMAGE_BASE64,
+  CHIP,
   SWITCH
 }

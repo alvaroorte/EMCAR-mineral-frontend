@@ -1,5 +1,6 @@
 import { TableColumnType } from "../enums/table-column-type.enum";
 import { BooleanColumnFormatConfig } from "./boolean-column-format-config.interface";
+import { ChipStyle } from "./chip-style.interface";
 
 export interface TableColumn<T> {
   field: Extract<keyof T, string>;
@@ -17,6 +18,7 @@ export interface TableColumn<T> {
   isEditable?: boolean;
   headerExtraIcon?: string;
   isFrozen?: boolean;
+  chipStyle?: ChipStyle;
   booleanColumnFormatConfig?: BooleanColumnFormatConfig;
 }
 

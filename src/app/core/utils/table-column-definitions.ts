@@ -13,6 +13,7 @@ import { AdvanceLoad } from '@core/interfaces/advance-load.interface';
 import { Liquidation } from '@core/interfaces/liquidation.interface';
 import { User } from '@core/interfaces/user.interface';
 import { PercentageLiquidation } from '@core/interfaces/percentage-liquidation.interface';
+import { getLoadStatusChipStyle } from '@core/enums/load.enum';
 
 export class TableColumnDefinitions {
    static getDefaultCompanyColumnsDefinitions(): TableColumn<Company>[] {
@@ -266,7 +267,8 @@ export class TableColumnDefinitions {
          {
             field: 'state',
             header: LABELS.status,
-            columnType: TableColumnType.TEXT,
+            columnType: TableColumnType.CHIP,
+            chipStyle: getLoadStatusChipStyle
          },
          {
             field: 'createdBy',

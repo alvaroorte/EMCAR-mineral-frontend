@@ -8,7 +8,7 @@ import { LoadModule } from './load.module';
 import { LoadService } from './services/load.service';
 import { Load } from '@core/interfaces/load.interface';
 import { AdvanceLoadComponent } from '../advance-load/advance-load.component';
-import { LOAD_STATUS_KEY, LOAD_STATUS_VALUE } from '@core/enums/load.enum';
+import { LOAD_STATUS_VALUE } from '@core/enums/load.enum';
 
 @Component({
     selector: 'app-load',
