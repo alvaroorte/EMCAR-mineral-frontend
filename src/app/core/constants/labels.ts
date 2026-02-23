@@ -329,7 +329,7 @@ export const TOOLTIPS = Object.freeze({
    massDeleting: 'Eliminación masiva',
    acceptChanges: 'Aceptar cambios',
    dismissChanges: 'Descartar Cambio',
-   changePassword: 'Descartar Cambio',
+   changePassword: 'Cambiar contraseña',
    editRow: 'Editar fila',
    deleteRow: 'Eliminar fila',
    uploadFile: 'Subir archivo',
